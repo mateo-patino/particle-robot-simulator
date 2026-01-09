@@ -36,7 +36,7 @@ particle = {
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 36
 highFreq = 10 # Hz
-lowFreq = 3 # Hz
+lowFreq = 1 # Hz
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01
 phaseNoiseSTD = 0.05 #0.1

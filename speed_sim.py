@@ -1,6 +1,11 @@
 """
 
-This script implements a simulation using MuJoCo's passive viewer
+Author(s): Mateo Patino, Hod Lipson
+Creative Machines Laboratory, Columbia University
+
+This script implements a simulation using MuJoCo's passive viewer. This script is otherwise identical to
+the runtime.py script in the "colab" folder, which does NOT use the passive viewer. I use this script to
+test the behavior of the particle robot and determine ideal parameters to use in real experiments.
 
 """
 
@@ -165,6 +170,7 @@ def launch():
                 print(f"RTF = {(data.time / (WALLnow - WALLstart)):.8f}")
                 LAST_LOG = WALLnow
 
+    # ensure the viewer thread is killed before the new simulation begins. Two concurrent viewers leads to crashes
     viewer = None
     time.sleep(0.2)
 
@@ -180,6 +186,7 @@ def launch():
 
 if __name__ == "__main__":
 
+    # Record the position data of the particles as a numpy binary file.
     dataPath = "data/"
     os.makedirs(dataPath, exist_ok=True)
     runs = 13

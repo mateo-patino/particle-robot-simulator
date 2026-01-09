@@ -33,8 +33,8 @@ geomType = "sphere" # 'sphere' or 'cylinder'
 
 # GRADIENT PARAMETERS
 N = 100 #14
-highFreq = 10 # 15
-lowFreq = 3 #20
+highFreq = 0 # 15
+lowFreq = 0 #20
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.1
 phaseNoiseSTD = 0.05 #0.05
@@ -55,7 +55,7 @@ cap_solimp = [0.9, 0.9, 0.005] # [m, h, w] = [rate at which stiffness grows with
 
 # CHAIN PARAMETERS
 linksPerSide = 5 #5
-tau = 0.7 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Bounded above by pi/4 (~0.785); beyond that interpentration occurs
 
 # CONTROL ALGORITHM
 targetDirection = np.array([1, 0])
@@ -519,25 +519,31 @@ PARAMETERS_DIR = f"parameters/{geomType}/"
 os.makedirs(RAW_DATA_DIR, exist_ok=True)
 os.makedirs(PARAMETERS_DIR, exist_ok=True)
 
-gradients = [(1, 2), (1,)]
-runsPerSize = 9
+gradients = [(1, 10), (5, 10), (10, 10)]
+runsPerGradient = 3
 existingRuns = 0
 
 line = "\n------------------------------------------\n"
 
 print(line)
-print("Running sizes", sizes)
-print("Runs per size", runsPerSize)
+print("Running gradients", gradients)
+print("Runs per gradient", runsPerGradient)
 print(line)
 
-for i, N in enumerate(sizes):
-    print(f"Simulating N = {N}")
-    for runNumber in range(1, runsPerSize + 1):
+for i, (low, high) in enumerate(gradients):
+    print(f"Simulating gradient low = {low} high = {high} (Hz)")
+    
+    # update the global variables lowFreq and highFreq. simulation() will use these updated values.
+    lowFreq = low
+    highFreq = high
+
+    for runNumber in range(1, runsPerGradient + 1):
         print(f"\nRun {runNumber + existingRuns} started")
         POSITION = simulation(N)
         print(f"Run {runNumber + existingRuns} complete")
-        np.save(RAW_DATA_DIR + f"{N}p_{runNumber + existingRuns}.npy", POSITION)
-        saveParametersToFile(PARAMETERS_DIR + f"{N}p_{runNumber + existingRuns}.txt")
+        np.save(RAW_DATA_DIR + f"{low}l_{high}h_{runNumber + existingRuns}.npy", POSITION)
+        saveParametersToFile(PARAMETERS_DIR + f"{low}l_{high}h_{runNumber + existingRuns}.txt")
         del POSITION
+
     print(line)
 

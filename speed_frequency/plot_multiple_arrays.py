@@ -26,9 +26,10 @@ def linePlot(ax, x, y, title, xlabel, ylabel):
 
 if __name__ == "__main__":
 
-    files = ["0l_10h_0.npy", "0l_10h_1.npy", "0l_10h_2.npy",
-             "0l_10h_0.npy", "0l_10h_1.npy", "0l_10h_2.npy",]
-    rows = 2
+    files = ["1l_10h_1.npy", "1l_10h_2.npy", "1l_10h_3.npy",
+             "5l_10h_1.npy", "5l_10h_2.npy", "5l_10h_3.npy",
+             "10l_10h_1.npy", "10l_10h_2.npy", "10l_10h_3.npy",]
+    rows = 3
     columns = 3
     fig, axes = plt.subplots(rows, columns)
 

@@ -189,9 +189,9 @@ if __name__ == "__main__":
     # Record the position data of the particles as a numpy binary file.
     dataPath = "data/"
     os.makedirs(dataPath, exist_ok=True)
-    runs = 13
-    existingRuns = 23
+    runs = 4
+    existingRuns = 0
     for r in range(runs):
         POSITION = launch()
-        np.save(dataPath + f"{gradient["N"]}p_{r + existingRuns}.npy", POSITION)
+        np.save(dataPath + f"{gradient["lowFreq"]}l_{gradient["highFreq"]}h_{r + existingRuns}.npy", POSITION)
         del POSITION

@@ -80,7 +80,7 @@ capsule = {
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
 linksPerSide = 5 #5
-tau = 0.65 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
     "tau": tau,

@@ -8,10 +8,8 @@ uses a grid with user-defined rows and columns to plot many arrays in multiple a
 
 """
 
-from math import sqrt
 import matplotlib.pyplot as plt
 import numpy as np
-from sys import argv
 
 # makes a  x and y
 def linePlot(ax, x, y, title, xlabel, ylabel):

@@ -26,11 +26,9 @@ def linePlot(ax, x, y, title, xlabel, ylabel):
 
 if __name__ == "__main__":
 
-    files = ["36p_27.npy", "36p_28.npy", "36p_29.npy", 
-             "36p_30.npy", "36p_31.npy", "36p_32.npy",
-             "36p_33.npy", "36p_34.npy", "36p_35.npy",]
-    rows = 3
-    columns = 3
+    files = ["1l_10h_0.npy", "1l_10h_1.npy", "1l_10h_2.npy", "1l_10h_1.npy",]
+    rows = 2
+    columns = 2
     fig, axes = plt.subplots(rows, columns)
 
     fileCount = 0

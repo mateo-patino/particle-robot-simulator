@@ -28,7 +28,8 @@ def linePlot(x, y, title, xlabel, ylabel):
 if __name__ == "__main__":
 
     file = "1l_10h_1.npy"
-    POSITION = np.load("data/" + file)
+    geomType = "sphere"
+    POSITION = np.load(f"data/{geomType}/" + file)
 
     x = POSITION[:, 0]
     y = POSITION[:, 1]

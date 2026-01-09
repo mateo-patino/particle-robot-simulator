@@ -36,7 +36,7 @@ particle = {
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 100
 highFreq = 10 # Hz
-lowFreq = 1 # Hz
+lowFreq = 5 # Hz
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01
 phaseNoiseSTD = 0.05 #0.1
@@ -80,7 +80,7 @@ capsule = {
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
 linksPerSide = 5 #5
-tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.65 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
     "tau": tau,

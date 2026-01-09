@@ -26,6 +26,7 @@ def linePlot(ax, x, y, title, xlabel, ylabel):
 
 if __name__ == "__main__":
 
+    geomType = "sphere"
     files = ["100p_5.npy", "100p_6.npy", "100p_7.npy", "100p_8.npy",]
     rows = 2
     columns = 2
@@ -36,7 +37,7 @@ if __name__ == "__main__":
         for c in range(columns):
             file = files[fileCount]
             fileCount += 1
-            POSITION = np.load("data/" + file)
+            POSITION = np.load(f"data/{geomType}/" + file)
             x = POSITION[:, 0]
             y = POSITION[:, 1]
             linePlot(axes[r][c], x, y, title=f"{file}", xlabel="x (m)", ylabel="y (m)")

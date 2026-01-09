@@ -1,7 +1,15 @@
-from math import sqrt
+"""
+
+Author(s): Mateo Patino, Hod Lipson
+Creative Machines Laboratory, Columbia University
+
+I use this script for plotting a "POSITION" array from a numpy binary file; useful for doing a quick
+sanity check on a simulation.
+
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
-from sys import argv
 
 # makes a  x and y
 def linePlot(x, y, title, xlabel, ylabel):

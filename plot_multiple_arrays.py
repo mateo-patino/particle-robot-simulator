@@ -1,3 +1,13 @@
+"""
+
+Author(s): Mateo Patino, Hod Lipson
+Creative Machines Laboratory, Columbia University
+
+I use this script for plotting multiple numpy arrays collected from the simulations. This script 
+uses a grid with user-defined rows and columns to plot many arrays in multiple axes.
+
+"""
+
 from math import sqrt
 import matplotlib.pyplot as plt
 import numpy as np

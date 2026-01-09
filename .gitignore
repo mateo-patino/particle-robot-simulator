@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.env/
+
+# Data outputs
+*.npy
+*.npz
+*.csv
+*.txt
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# MuJoCo / temp
+*.mjb

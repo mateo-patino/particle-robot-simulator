@@ -5,7 +5,7 @@ Creative Machines Laboratory, Columbia University
 
 This script is main the source of data for speed vs. frequency.
 
-Maintaining the integrity of this code is critical because this script is the main source of experimental speed-vs-size data
+Maintaining the integrity of this code is critical because this script is the main source of experimental speed-vs-frequency data
 for this project alongside Colab.
 
 """

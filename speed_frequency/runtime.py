@@ -519,9 +519,10 @@ PARAMETERS_DIR = f"parameters/{geomType}/"
 os.makedirs(RAW_DATA_DIR, exist_ok=True)
 os.makedirs(PARAMETERS_DIR, exist_ok=True)
 
-gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10)]
-runsPerGradient = 5
-existingRuns = 0
+gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
+             (6, 10), (7, 10), (8, 10), (9, 10), (10, 10)]
+runsPerGradient = 4
+existingRuns = 12
 
 line = "\n------------------------------------------\n"
 

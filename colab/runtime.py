@@ -521,9 +521,9 @@ PARAMETERS_DIR = f"parameters/{geomType}/"
 os.makedirs(RAW_DATA_DIR, exist_ok=True)
 os.makedirs(PARAMETERS_DIR, exist_ok=True)
 
-sizes = [400, 500]
-runsPerSize = 9
-existingRuns = 0
+sizes = [600]
+runsPerSize = 3
+existingRuns = 10
 
 line = "\n------------------------------------------\n"
 

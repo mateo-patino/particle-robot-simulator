@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-# returns the average speed of a .npy file from the given data and parameter path
+# returns the average speed (cm/s) of a .npy file from the given data and parameter path
 def averageSpeed(dataPath, paramsPath):
 
     # read the simulation duration from the parameters .txt file
@@ -28,7 +28,7 @@ def averageSpeed(dataPath, paramsPath):
     POSITION = np.load(dataPath)
     D = np.linalg.norm(POSITION[-1] - POSITION[0])
 
-    return D / duration
+    return 100 * D / duration
         
 
 # intervals to plot and number of runs to read
@@ -54,7 +54,7 @@ for i, (low, high) in enumerate(gradients):
 # plot
 plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=1)
 plt.xlabel("Frequency gradient (high - low)")
-plt.ylabel("Median speed (m/s)")
+plt.ylabel("Speed (cm/s)")
 plt.title("Median speed vs. frequency gradient for N = 100 robot")
 plt.grid()
 plt.show()

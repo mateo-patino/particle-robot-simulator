@@ -29,37 +29,38 @@ def averageSpeed(dataPath, paramsPath):
     D = np.linalg.norm(POSITION[-1] - POSITION[0])
 
     return 100 * D / duration
-        
 
-# intervals to plot and number of runs to read
-runsPerGradient = 20
-gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
-             (6, 10), (7, 10), (8, 10), (9, 10), (10, 10)]
-gradients.reverse()
+if __name__ == "__main__":
+    # intervals to plot and number of runs to read
+    runsPerGradient = 20
+    gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
+                (6, 10), (7, 10), (8, 10), (9, 10), (10, 10)]
+    gradients.reverse()
 
-# buffers and paths
-medianSpeeds = []
-frequencyDifference = []
-DATA_PATH = "data/sphere/"
-PARAMETER_PATH = "parameters/sphere/"
+    # buffers and paths
+    medianSpeeds = []
+    frequencyDifference = []
+    DATA_PATH = "data/sphere/"
+    PARAMETER_PATH = "parameters/sphere/"
 
-for i, (low, high) in enumerate(gradients):
-    frequencyDifference.append(high - low)
-    speeds = []
-    for r in range(1, runsPerGradient + 1):
-        speeds.append(averageSpeed(DATA_PATH + f"{low}l_{high}h_{r}.npy",
-                                   PARAMETER_PATH + f"{low}l_{high}h_{r}.txt"))
-    medianSpeeds.append(np.median(speeds))
+    for i, (low, high) in enumerate(gradients):
+        frequencyDifference.append(high - low)
+        speeds = []
+        for r in range(1, runsPerGradient + 1):
+            speeds.append(averageSpeed(DATA_PATH + f"{low}l_{high}h_{r}.npy",
+                                    PARAMETER_PATH + f"{low}l_{high}h_{r}.txt"))
+        medianSpeeds.append(np.median(speeds))
 
-# LaTeX rendering
-plt.rcParams["text.usetex"] = True
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
+    # LaTeX rendering
+    plt.rcParams["text.usetex"] = True
+    plt.rcParams["font.family"] = "serif"
+    plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
 
-# plot
-plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=2)
-plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
-plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
-plt.title(r"$\text{Median speed vs. frequency gradient for } N = 100 $", fontsize=14)
-plt.grid()
-plt.show()
+    # plot
+    #plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=2)
+    plt.scatter(frequencyDifference, medianSpeeds, color="black", s=25, zorder=3)
+    plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
+    plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
+    plt.title(r"$\text{Median speed vs. frequency gradient for } N = 100 $", fontsize=14)
+    plt.grid()
+    plt.show()

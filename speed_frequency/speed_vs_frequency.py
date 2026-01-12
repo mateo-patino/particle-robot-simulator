@@ -52,7 +52,7 @@ for i, (low, high) in enumerate(gradients):
     medianSpeeds.append(np.median(speeds))
 
 # plot
-plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=1)
+plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=2)
 plt.xlabel("Frequency gradient (high - low)")
 plt.ylabel("Speed (cm/s)")
 plt.title("Median speed vs. frequency gradient for N = 100 robot")

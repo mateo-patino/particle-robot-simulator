@@ -14,7 +14,7 @@ from speed_vs_frequency import averageSpeed
 
 
 def plotHistogram(ax, data, label):
-    ax.hist(data, bins="auto", density=True, color="gray", edgecolor="black", label=label, zorder=2)
+    ax.hist(data, bins=8, density=True, color="gray", edgecolor="black", label=label, zorder=2)
     ax.legend()
     ax.set_xlabel("Speed (cm/s)", fontsize=10)
     ax.set_ylabel("Probability density")

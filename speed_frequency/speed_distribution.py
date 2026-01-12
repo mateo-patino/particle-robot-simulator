@@ -13,16 +13,15 @@ import numpy as np
 from speed_vs_frequency import averageSpeed
 
 
-def plotHistogram(ax, data, title):
-    ax.hist(data, bins="auto", density=True, edgecolor="black", zorder=2)
-    ax.set_title(title, fontsize=10)
+def plotHistogram(ax, data, label):
+    ax.hist(data, bins="auto", density=True, edgecolor="black", label=label, zorder=2)
+    ax.legend()
     ax.set_xlabel("Speed (cm/s)", fontsize=10)
     ax.set_ylabel("Probability density")
     ax.grid("both")
 
-gradients = [(0, 10), (1, 10), (2, 10),
-             (3, 10), (4, 10), (5, 10), 
-             (6, 10), (7, 10), (8, 10)]
+gradients = [(0, 10), (5, 10),
+             (7, 10), (10, 10)]
 runsPerGradient = 20
 
 DATA_PATH = "data/sphere/"
@@ -43,7 +42,7 @@ for i, (low, high) in enumerate(gradients):
 count = 0
 for r in range(rows):
     for c in range(columns):
-        plotHistogram(axes[r][c], distributions[count], f"(low, high) = {gradients[count]}")
+        plotHistogram(axes[r][c], distributions[count], f"{gradients[count]}")
         count += 1
 
 plt.show()

@@ -58,8 +58,8 @@ plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
 
 # plot
 plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=2)
-plt.xlabel(r"$\text{Frequency gradient } (\omega_{\text{high}} - \omega_{\text{low}})$", fontsize=12)
+plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
 plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
-plt.title(r"$\text{Median speed vs. frequency gradient for } N = 100 \text{ robot}$", fontsize=14)
+plt.title(r"$\text{Median speed vs. frequency gradient for } N = 100 $", fontsize=14)
 plt.grid()
 plt.show()

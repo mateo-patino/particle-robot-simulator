@@ -22,7 +22,7 @@ def plotHistogram(ax, data, label):
 
 gradients = [(0, 10), (5, 10),
              (7, 10), (10, 10)]
-runsPerGradient = 20
+runsPerGradient = 30
 
 DATA_PATH = "data/sphere/"
 PARAMETER_PATH = "parameters/sphere/"

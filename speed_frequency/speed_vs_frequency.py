@@ -48,11 +48,11 @@ def averageSpeed(dataPath, paramsPath):
 
 if __name__ == "__main__":
     # intervals to plot and number of runs to read
-    runsPerGradient = 20
+    runsPerGradient = 30
     gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
                 (6, 10), (7, 10), (8, 10), (9, 10), (10, 10)]
     gradients.reverse() # start from low gradients to high gradients
-    NORMALIZE = True # normalize speed by d * (high - low)
+    NORMALIZE = False # normalize speed by d * (high - low)
 
     # buffers and paths
     medianSpeeds = []

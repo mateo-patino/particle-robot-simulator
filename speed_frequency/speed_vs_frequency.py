@@ -57,7 +57,6 @@ if __name__ == "__main__":
     plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
 
     # plot
-    #plt.plot(frequencyDifference, medianSpeeds, color="tab:red", zorder=2)
     plt.scatter(frequencyDifference, medianSpeeds, color="black", s=25, zorder=3)
     plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
     plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)

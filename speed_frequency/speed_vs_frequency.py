@@ -39,6 +39,8 @@ if __name__ == "__main__":
 
     # buffers and paths
     medianSpeeds = []
+    lowerErrors = []
+    upperErrors = []
     frequencyDifference = []
     DATA_PATH = "data/sphere/"
     PARAMETER_PATH = "parameters/sphere/"
@@ -49,15 +51,22 @@ if __name__ == "__main__":
         for r in range(1, runsPerGradient + 1):
             speeds.append(averageSpeed(DATA_PATH + f"{low}l_{high}h_{r}.npy",
                                     PARAMETER_PATH + f"{low}l_{high}h_{r}.txt"))
-        medianSpeeds.append(np.median(speeds))
+        median = np.median(speeds)
+        medianSpeeds.append(median)
+        lowerErrors.append(median - np.percentile(speeds, 25))
+        upperErrors.append(np.percentile(speeds, 75) - median)
 
     # LaTeX rendering
     plt.rcParams["text.usetex"] = True
     plt.rcParams["font.family"] = "serif"
     plt.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"
+    plt.rcParams['xtick.labelsize'] = 12
+    plt.rcParams['ytick.labelsize'] = 13
 
     # plot
     plt.scatter(frequencyDifference, medianSpeeds, color="black", s=25, zorder=3)
+    plt.errorbar(frequencyDifference, medianSpeeds, yerr=[lowerErrors, upperErrors], color="black",
+                 fmt="o", capsize=5, markersize=6, elinewidth=1.5)
     plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
     plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
     plt.title(r"$\text{Median speed vs. frequency gradient for } N = 100 $", fontsize=14)

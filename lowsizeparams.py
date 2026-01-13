@@ -35,8 +35,8 @@ particle = {
 
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 100
-highFreq = 12 # Hz
-lowFreq = 6 # Hz
+highFreq = 11 # Hz
+lowFreq = 7.65 # Hz
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01
 phaseNoiseSTD = 0.05 #0.1
@@ -51,7 +51,7 @@ gradient = {
 }
 
 """ PARAMETERS OF THE ALGORITHM """
-SIM_DURATION = 20
+SIM_DURATION = 15  + 20
 timestep = 7e-05 # 7e-05
 solver = "Newton"
 iterations = 100
@@ -67,7 +67,7 @@ algorithm = {
 
 
 """PARAMETERS OF THE CAPSULES"""
-capsuleRadius = 0.75 * radius #radius
+capsuleRadius = 0.5 * radius #radius
 capsuleMass = 0.0155
 cap_solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 cap_solimp = [0.9, 0.9, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.9, 0.9, 0.005]
@@ -80,7 +80,7 @@ capsule = {
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
 linksPerSide = 5 #5
-tau = 0.7 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.75 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
     "tau": tau,

@@ -35,8 +35,8 @@ particle = {
 
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 100
-highFreq = 10 # Hz
-lowFreq = 3 # Hz
+highFreq = 12 # Hz
+lowFreq = 6 # Hz
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01
 phaseNoiseSTD = 0.05 #0.1
@@ -67,7 +67,7 @@ algorithm = {
 
 
 """PARAMETERS OF THE CAPSULES"""
-capsuleRadius = radius #radius
+capsuleRadius = 0.75 * radius #radius
 capsuleMass = 0.0155
 cap_solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 cap_solimp = [0.9, 0.9, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.9, 0.9, 0.005]

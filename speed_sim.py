@@ -190,7 +190,7 @@ if __name__ == "__main__":
     os.makedirs(dataPath, exist_ok=True)
     runs = 5
     existingRuns = 0
-    for r in range(runs):
+    for r in range(1, runs + 1):
         POSITION = launch()
-        np.save(dataPath + f"{gradient["lowFreq"]}l_{gradient["highFreq"]}h_{r + existingRuns}.npy", POSITION)
+        np.save(dataPath + f"{gradient["N"]}p_{r + existingRuns}.npy", POSITION)
         del POSITION

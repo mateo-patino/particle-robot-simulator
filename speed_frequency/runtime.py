@@ -22,14 +22,14 @@ import os
 planeLengthFactor = 4
 
 # CYLINDER/SPHERICAL PARAMETERS
-radius = 0.019
-halfLen = radius
-mass = 0.26
+radius = 0.02
+halfLen = 0.25 * radius
+mass = 0.2
 solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 solimp = [0.95, 0.95, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.95, 0.95, 0.005]
 clearance = 0.00001
-rotorMass = 4 * 0.014
-geomType = "sphere" # 'sphere' or 'cylinder'
+rotorMass = 0.07
+geomType = "cylinder" # 'sphere' or 'cylinder'
 
 # GRADIENT PARAMETERS
 N = 100 #14
@@ -40,14 +40,14 @@ forceNoiseSTD = 0.01 #0.1
 phaseNoiseSTD = 0.05 #0.05
 
 # ALGORITHMS PARAMETERS
-SIM_DURATION = 20
+SIM_DURATION = 25
 timestep = 7e-05
 solver = "Newton"
 iterations = 100
 tolerance = 1e-12
 
 # CAPSULE PARAMETERS
-capsuleRadius = radius
+capsuleRadius = 0.4 * radius
 capsuleMass = 0.0155
 offsetFromOrigin = 0.033
 cap_solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
@@ -55,7 +55,7 @@ cap_solimp = [0.9, 0.9, 0.005] # [m, h, w] = [rate at which stiffness grows with
 
 # CHAIN PARAMETERS
 linksPerSide = 5 #5
-tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.7 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Bounded above by pi/4 (~0.785); beyond that interpentration occurs
 
 # CONTROL ALGORITHM
 targetDirection = np.array([1, 0])
@@ -521,8 +521,8 @@ os.makedirs(PARAMETERS_DIR, exist_ok=True)
 
 gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
              (6, 10), (7, 10), (8, 10), (9, 10), (10, 10)]
-runsPerGradient = 4
-existingRuns = 12
+runsPerGradient = 12
+existingRuns = 0
 
 line = "\n------------------------------------------\n"
 

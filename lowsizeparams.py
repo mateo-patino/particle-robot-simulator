@@ -15,7 +15,7 @@ planeLengthFactor = 4
 
 """ BASIC PARAMETERS OF A CYLINDRICAL/SPHERICAL PARTICLE """
 radius = 0.019
-halfLen = radius
+halfLen = 0.25 * radius
 mass = 0.26
 solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 solimp = [0.95, 0.95, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.95, 0.95, 0.005]

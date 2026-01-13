@@ -16,7 +16,7 @@ planeLengthFactor = 4
 """ BASIC PARAMETERS OF A CYLINDRICAL/SPHERICAL PARTICLE """
 radius = 0.019
 halfLen = 0.25 * radius
-mass = 0.22
+mass = 0.2
 solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 solimp = [0.95, 0.95, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.95, 0.95, 0.005]
 clearance = 0.00001 # a small distance used to separate particles in the initial set up of the simulation to avoid interpenetration
@@ -35,7 +35,7 @@ particle = {
 
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 100
-highFreq = 11 # Hz
+highFreq = 10 # Hz
 lowFreq = 6 # Hz 7.65
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01

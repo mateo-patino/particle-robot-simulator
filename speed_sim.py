@@ -13,7 +13,6 @@ import mujoco
 import mujoco.viewer
 import numpy as np
 import time
-import subprocess
 import build_mj_model
 from lowsizeparams import gradient, control, algorithm, particle, SIM_DURATION
 import os
@@ -187,9 +186,9 @@ def launch():
 if __name__ == "__main__":
 
     # Record the position data of the particles as a numpy binary file.
-    dataPath = "data/"
+    dataPath = f"data/{particle["geomType"]}/"
     os.makedirs(dataPath, exist_ok=True)
-    runs = 4
+    runs = 5
     existingRuns = 0
     for r in range(runs):
         POSITION = launch()

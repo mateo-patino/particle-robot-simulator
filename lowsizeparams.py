@@ -21,7 +21,7 @@ solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, d
 solimp = [0.95, 0.95, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.95, 0.95, 0.005]
 clearance = 0.00001 # a small distance used to separate particles in the initial set up of the simulation to avoid interpenetration
 rotorMass = 4 * 0.014
-geomType = "sphere" # "sphere" or "cylinder"
+geomType = "cylinder" # "sphere" or "cylinder"
 
 particle = {
         "halfLen": halfLen,
@@ -36,7 +36,7 @@ particle = {
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 100
 highFreq = 10 # Hz
-lowFreq = 0 # Hz
+lowFreq = 3 # Hz
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01
 phaseNoiseSTD = 0.05 #0.1
@@ -80,7 +80,7 @@ capsule = {
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
 linksPerSide = 5 #5
-tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.7 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
     "tau": tau,

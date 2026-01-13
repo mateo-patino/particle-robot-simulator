@@ -27,7 +27,7 @@ def linePlot(x, y, title, xlabel, ylabel):
 
 if __name__ == "__main__":
 
-    file = "100p_1.npy"
+    file = "100p_12.npy"
     POSITION = np.load("data/cylinder/" + file)
 
     x = POSITION[:, 0]

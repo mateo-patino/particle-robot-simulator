@@ -188,8 +188,8 @@ if __name__ == "__main__":
     # Record the position data of the particles as a numpy binary file.
     dataPath = f"data/{particle["geomType"]}/"
     os.makedirs(dataPath, exist_ok=True)
-    runs = 5
-    existingRuns = 0
+    runs = 1
+    existingRuns = 11
     for r in range(1, runs + 1):
         POSITION = launch()
         np.save(dataPath + f"{gradient["N"]}p_{r + existingRuns}.npy", POSITION)

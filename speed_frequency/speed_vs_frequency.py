@@ -59,8 +59,8 @@ if __name__ == "__main__":
     lowerErrors = []
     upperErrors = []
     frequencyDifference = []
-    DATA_PATH = "data/sphere/"
-    PARAMETER_PATH = "parameters/sphere/"
+    DATA_PATH = "data/cylinder/"
+    PARAMETER_PATH = "parameters/cylinder/"
 
     for i, (low, high) in enumerate(gradients):
         frequencyDifference.append(high - low)
@@ -109,6 +109,6 @@ if __name__ == "__main__":
         plt.title(r"$\text{Normalized median speed vs. frequency gradient for } N = 100 $", fontsize=14)
     else:
         plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
-        plt.title(r"$\text{Median speed vs. frequency gradient for } N = 100 $", fontsize=14)
+        plt.title(r"$\text{Median speed (cylinders) vs. frequency gradient for } N = 100 $", fontsize=14)
     plt.grid()
     plt.show()

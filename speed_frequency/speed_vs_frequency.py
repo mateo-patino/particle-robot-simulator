@@ -52,15 +52,16 @@ if __name__ == "__main__":
     gradients = [(0, 10), (1, 10), (2, 10), (3, 10), (4, 10), (5, 10),
                 (6, 10), (7, 10), (8, 10), (9, 10), (10, 10)]
     gradients.reverse() # start from low gradients to high gradients
-    NORMALIZE = False # normalize speed by d * (high - low)
+    NORMALIZE = True # normalize speed by d * (high - low)
+    geomType = "cylinder"
 
     # buffers and paths
     medianSpeeds = []
     lowerErrors = []
     upperErrors = []
     frequencyDifference = []
-    DATA_PATH = "data/cylinder/"
-    PARAMETER_PATH = "parameters/cylinder/"
+    DATA_PATH = f"data/{geomType}/"
+    PARAMETER_PATH = f"parameters/{geomType}/"
 
     for i, (low, high) in enumerate(gradients):
         frequencyDifference.append(high - low)
@@ -105,10 +106,12 @@ if __name__ == "__main__":
                     fmt="o", capsize=5, markersize=6, elinewidth=1.5)
     plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
     if NORMALIZE:
+        title = r"$\text{Normalized median speed " + f"({geomType}) " + r"vs. frequency gradient for } N = 100 $"
         plt.ylabel(r"$\text{Normalized speed} \left(\frac{v}{d\Delta f}\right)$", fontsize=12)
-        plt.title(r"$\text{Normalized median speed vs. frequency gradient for } N = 100 $", fontsize=14)
+        plt.title(title, fontsize=14)
     else:
+        title = r"$\text{Median speed " + f"({geomType}) " + r"vs. frequency gradient for } N = 100 $"
         plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
-        plt.title(r"$\text{Median speed (cylinders) vs. frequency gradient for } N = 100 $", fontsize=14)
+        plt.title(title, fontsize=14)
     plt.grid()
     plt.show()

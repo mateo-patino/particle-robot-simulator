@@ -12,6 +12,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+# given a parameter file path, returns the duration specified in the file
+def getDuration(paramsPath):
+    # read the simulation duration from the parameters .txt file
+    with open(paramsPath) as paramsFile:
+        line = paramsFile.readline().split(" ")
+        while (len(line) > 0 and line[0] != "Simulation"):
+            line = paramsFile.readline().split(" ")
+
+        # the line must be formatted "Simulation duration = X (s)" so that line[3] is duration
+        return float(line[3])
+
+
+
 """ returns a value d*f, where d is the diameter of the robot and f is the frequency gradient. It takes a 
 path to a .txt parameters file and reads the frequencies, link length, and links per side"""
 def normalizationFactor(paramsPath):
@@ -30,15 +43,7 @@ def normalizationFactor(paramsPath):
 
 # returns the average speed (cm/s) of a .npy file from the given data and parameter path
 def averageSpeed(dataPath, paramsPath):
-
-    # read the simulation duration from the parameters .txt file
-    with open(paramsPath) as paramsFile:
-        line = paramsFile.readline().split(" ")
-        while (len(line) > 0 and line[0] != "Simulation"):
-            line = paramsFile.readline().split(" ")
-
-        # the line must be formatted "Simulation duration = X (s)" so that line[3] is duration
-        duration = float(line[3])
+    duration = getDuration(paramsPath)
 
     # compute net displacement
     POSITION = np.load(dataPath)

@@ -73,7 +73,7 @@ if __name__ == "__main__":
     plt.errorbar(frequencyDifferences, averageMagnitude, yerr=[lowerErrors, upperErrors], color="black",
                     fmt="o", capsize=5, markersize=6, elinewidth=1.5)
     plt.xlabel(r"$\text{Frequency gradient } \omega_{\text{high}} - \omega_{\text{low}} \text{ (Hz)}$", fontsize=12)
-    title = r"$\text{Median speed " + f"({geomType}) " + r"vs. frequency gradient for } N = 100 $"
+    title = r"$\text{Magnitude of average velocity " + f"({geomType}) " + r"vs. frequency gradient for } N = 100 $"
     plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
     plt.title(title, fontsize=14)
     plt.grid("both")

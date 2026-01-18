@@ -56,6 +56,8 @@ if __name__ == "__main__":
         # compute errors by looking at the magnitudes of the vectors in the velocity array
         magnitudes = np.linalg.norm(velocities, axis=1)
         medMag = np.median(magnitudes)
+
+        # note that this error bars are based on the magnitudes array
         lowerErrors[i] = medMag - np.percentile(magnitudes, 25)
         upperErrors[i] = np.percentile(magnitudes, 75) - medMag
 

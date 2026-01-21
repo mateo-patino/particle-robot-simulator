@@ -14,14 +14,14 @@ import numpy as np
 planeLengthFactor = 4
 
 """ BASIC PARAMETERS OF A CYLINDRICAL/SPHERICAL PARTICLE """
-radius = 0.02
-halfLen = 0.25 * radius
-mass = 0.2
+radius = 0.019
+halfLen = radius
+mass = 0.26
 solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 solimp = [0.95, 0.95, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.95, 0.95, 0.005]
 clearance = 0.00001 # a small distance used to separate particles in the initial set up of the simulation to avoid interpenetration
-rotorMass = 0.07
-geomType = "cylinder" # "sphere" or "cylinder"
+rotorMass = 4 * 0.014
+geomType = "sphere" # "sphere" or "cylinder"
 
 particle = {
         "halfLen": halfLen,
@@ -35,8 +35,8 @@ particle = {
 
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
 N = 100
-highFreq = 10 # Hz 10 works well 
-lowFreq = 5 # Hz 6 works well (lowest bound acceptable = 0, highest bound acceptable = 10)
+highFreq = 10 # Hz
+lowFreq = 5 # Hz
 phase = 2 * np.pi
 forceNoiseSTD = 0.01 #0.01
 phaseNoiseSTD = 0.05 #0.1
@@ -67,7 +67,7 @@ algorithm = {
 
 
 """PARAMETERS OF THE CAPSULES"""
-capsuleRadius = 0.4 * radius #radius
+capsuleRadius = radius #radius
 capsuleMass = 0.0155
 cap_solref = [0.003, 1] # [r, d] = [how quickly the constraint error is corrected, damping; how inelastic the collision is] [0.003, 1]
 cap_solimp = [0.9, 0.9, 0.005] # [m, h, w] = [rate at which stiffness grows with penetration, min. impendance when constraint is barely violated, width of the interval around the contact margin where the transition in stiffness occurs] [0.9, 0.9, 0.005]
@@ -80,7 +80,7 @@ capsule = {
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
 linksPerSide = 5 #5
-tau = 0.7 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
     "tau": tau,

@@ -8,7 +8,7 @@ root directory of the speed_frequency and colab directories.
 
 """
 
-from speed_frequency.speed_vs_frequency import averageSpeed
+from speed_frequency.speed_vs_frequency import averageSpeed, normalizationFactor
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -17,6 +17,7 @@ if __name__ == "__main__":
     sizes = [100, 200, 300, 400, 500, 600]
     runsPerSize = 15
     geomType = "sphere"
+    NORMALIZE = True
 
     DATA_PATH = f"colab/data/{geomType}/"
     PARAMS_PATH = f"colab/parameters/{geomType}/"
@@ -33,6 +34,22 @@ if __name__ == "__main__":
         lowerErr.append(median - np.percentile(speeds, 25))
         upperErr.append(np.percentile(speeds, 75) - median)
     
+    medianSpeeds = np.array(medianSpeeds)
+    lowerErr = np.array(lowerErr)
+    upperErr = np.array(upperErr)
+
+    # normalize if requested
+    if NORMALIZE:
+        factors = []
+        for s in sizes:
+            factors.append(normalizationFactor(PARAMS_PATH + f"{s}p_1.txt")) # use the first run
+        factors = np.array(factors)
+        mask = factors != 0
+        medianSpeeds = medianSpeeds[mask] / factors[mask]
+        lowerErr = lowerErr[mask]
+        upperErr = upperErr[mask]
+
+    
     # LaTeX rendering
     plt.rcParams["text.usetex"] = True
     plt.rcParams["font.family"] = "serif"
@@ -41,10 +58,14 @@ if __name__ == "__main__":
     plt.rcParams['ytick.labelsize'] = 13
 
     plt.scatter(sizes, medianSpeeds, color="black", s=25, zorder=3)
-    plt.errorbar(sizes, medianSpeeds, yerr=[lowerErr, upperErr], color="black",
+    if not NORMALIZE:
+        plt.errorbar(sizes, medianSpeeds, yerr=[lowerErr, upperErr], color="black",
                     fmt="o", capsize=5, markersize=6, elinewidth=1.5)
     plt.xlabel(r"$\text{Number of particles}$", fontsize=12)
-    plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
+    if NORMALIZE:
+        plt.ylabel(r"$\text{Normalized speed}$", fontsize=12)
+    else:
+        plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
     plt.title(r"$\text{Median speed " + f"({geomType}) " + " vs. robot size}$", fontsize=14)
     plt.grid("both")
     plt.show()

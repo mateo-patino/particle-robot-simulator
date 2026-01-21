@@ -8,6 +8,7 @@ poured into optimizing this parameters so the simulation is stable, fast, and ph
 
 """
 
+from math import sqrt
 import numpy as np
 
 """PLANE LENGTH"""
@@ -79,7 +80,7 @@ capsule = {
 }
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
-linksPerSide = 5 #5
+linksPerSide = 8 #5
 tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
@@ -95,4 +96,24 @@ control = {
     "targetDirection": targetDirection,
     "RUN_EVERY": RUN_EVERY,
     "margin": margin,
+}
+
+"""OBSTACLE PARAMETERS. 'separation' is the y-distance between both boxes"""
+insertObstacles = True
+width = 0.1
+height = 0.05
+depth = 0.1
+xpos = -0.25
+ypos = 0
+zpos = height / 2
+separation = 0.9 * sqrt(N) * 2 * radius
+
+obstacle = {
+    "width": width,
+    "height": height,
+    "depth": depth,
+    "xpos": xpos,
+    "ypos": ypos,
+    "zpos": zpos,
+    "separation": separation,
 }

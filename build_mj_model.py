@@ -14,6 +14,24 @@ import build_chain
 import lowsizeparams as params
 
 
+# returns the XML for two box geoms
+def insertBoxObstacles():
+
+    halfWidth = params.obstacle["width"] / 2
+    halfDepth = params.obstacle["depth"] / 2
+    halfHeight = params.obstacle["height"] / 2
+    x = params.obstacle["xpos"]
+    y = params.obstacle["ypos"]
+    z = params.obstacle["zpos"]
+
+    return f""" 
+
+        <geom type="box" size="{halfWidth} {halfDepth} {halfHeight}" pos="{x} {y} {z}"/>
+        <geom type="box" size="{halfWidth} {halfDepth} {halfHeight}" pos="{x} {y + params.obstacle["separation"]} {z}"/>
+
+    """
+
+
 # returns the initial height at which a Particle should be set
 def initialHeight(particle):
     if particle.geomType == "cylinder":
@@ -122,6 +140,9 @@ def _constructSphereXMLWithChain_(particles, algorithm):
     csolref = cap["solref"]
     csolimp = cap["solimp"]
 
+    # add two box geoms as obstacles if requested
+    obstacle = insertBoxObstacles() if params.insertObstacles else ""
+
     xml = f"""
 
         <mujoco model="{params.N}-particle robot">
@@ -148,6 +169,8 @@ def _constructSphereXMLWithChain_(particles, algorithm):
             <worldbody>
                 <camera name="top" pos="0 0 1" quat="0 1 0 0" mode="fixed"/>
                 <geom name="floor" type="plane" size="{planeLen} {planeLen} 0.1" material="gridmat" rgba="1 1 1 1"/>
+
+                {obstacle}
             
                 {particleBodies}
 

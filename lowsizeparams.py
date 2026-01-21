@@ -35,7 +35,7 @@ particle = {
     }
 
 """ PARAMETERS OF THE HIGH-LOW ENERGY GRADIENT. """
-N = 100
+N = 64
 highFreq = 10 # Hz
 lowFreq = 5 # Hz
 phase = 2 * np.pi
@@ -52,7 +52,7 @@ gradient = {
 }
 
 """ PARAMETERS OF THE ALGORITHM """
-SIM_DURATION = 20
+SIM_DURATION = 480
 timestep = 7e-05 # 7e-05
 solver = "Newton"
 iterations = 100
@@ -81,7 +81,7 @@ capsule = {
 
 """CHAIN PARAMETERS. This script assumes that linksPerSide is constant/arbitrary."""
 linksPerSide = 8 #5
-tau = 0.6 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
+tau = 0.65 # tightness ratio 0 < tau <= pi/4 (higher = tighter, lower = looser). Mathematically bounded above by pi/4 (~0.785); beyond that interpentration occurs
 chain = {
     "linksPerSide": linksPerSide,
     "tau": tau,
@@ -106,7 +106,7 @@ depth = 0.1
 xpos = -0.25
 ypos = 0
 zpos = height / 2
-separation = 0.9 * sqrt(N) * 2 * radius
+separation = 1.5 * sqrt(N) * 2 * radius
 
 obstacle = {
     "width": width,

@@ -17,7 +17,7 @@ if __name__ == "__main__":
     sizes = [100, 200, 300, 400, 500, 600]
     runsPerSize = 15
     geomType = "sphere"
-    NORMALIZE = True
+    NORMALIZE = False
 
     DATA_PATH = f"colab/data/{geomType}/"
     PARAMS_PATH = f"colab/parameters/{geomType}/"
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         plt.title(r"$\text{Normalized median speed " + f"({geomType}) " + r" vs. robot size for } \Delta f = 7 \text{ Hz} $", fontsize=14)
         plt.ylabel(r"$\text{Normalized speed} \left(\frac{v}{d \Delta f} \right)$", fontsize=12)
     else:
-        plt.title(r"$\text{Median speed " + f"({geomType}) " + r" vs. robot size for } \Delta f = 7 Hz $", fontsize=14)
-        plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
+        plt.title(r"$\text{Median speed " + f"({geomType}) " + r" vs. robot size for } \Delta f = 7 \text{ Hz} $", fontsize=14)
+        plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)  
     plt.grid("both")
     plt.show()

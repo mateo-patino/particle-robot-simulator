@@ -26,8 +26,8 @@ def insertBoxObstacles():
 
     return f""" 
 
-        <geom type="box" size="{halfWidth} {halfDepth} {halfHeight}" pos="{x} {y} {z}"/>
-        <geom type="box" size="{halfWidth} {halfDepth} {halfHeight}" pos="{x} {y + params.obstacle["separation"]} {z}"/>
+        <geom type="box" size="{halfWidth} {halfDepth} {halfHeight}" pos="{x} {y} {z}" rgba="0 0 0 1"/>
+        <geom type="box" size="{halfWidth} {halfDepth} {halfHeight}" pos="{x} {y + params.obstacle["separation"]} {z}" rgba="0 0 0 1"/>
 
     """
 

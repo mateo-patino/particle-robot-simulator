@@ -63,9 +63,10 @@ if __name__ == "__main__":
                     fmt="o", capsize=5, markersize=6, elinewidth=1.5)
     plt.xlabel(r"$\text{Number of particles}$", fontsize=12)
     if NORMALIZE:
-        plt.ylabel(r"$\text{Normalized speed}$", fontsize=12)
+        plt.title(r"$\text{Normalized median speed " + f"({geomType}) " + r" vs. robot size for } \Delta f = 7 \text{ Hz} $", fontsize=14)
+        plt.ylabel(r"$\text{Normalized speed} \left(\frac{v}{d \Delta f} \right)$", fontsize=12)
     else:
+        plt.title(r"$\text{Median speed " + f"({geomType}) " + r" vs. robot size for } \Delta f = 7 Hz $", fontsize=14)
         plt.ylabel(r"$\text{Speed (cm/s)}$", fontsize=12)
-    plt.title(r"$\text{Median speed " + f"({geomType}) " + " vs. robot size}$", fontsize=14)
     plt.grid("both")
     plt.show()

@@ -4,7 +4,7 @@ Author(s): Mateo Patino, Hod Lipson
 Creative Machines Laboratory, Columbia University
 
 This script plots median speed vs. size (N) for the speed-size experiments. It must be run from the 
-root directory of the speed_frequency and colab directories.
+root directory of the speed_frequency and colab directories (i.e. python3 -m colab.speed_vs_size)
 
 """
 
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     sizes = [100, 200, 300, 400, 500, 600]
     runsPerSize = 15
     geomType = "sphere"
-    NORMALIZE = False
+    NORMALIZE = True
 
     DATA_PATH = f"colab/data/{geomType}/"
     PARAMS_PATH = f"colab/parameters/{geomType}/"

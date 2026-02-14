@@ -28,4 +28,6 @@ def run_1d_sweep(config, target_parameter, values=None):
         sim = Simulation(new_config)
         results[str(value)] = sim.run()
 
+    print("\nSweeping complete")
+
     return results

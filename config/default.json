@@ -1,0 +1,8 @@
+{
+    "sim_duration": 20,
+    "high_freq": 10,
+    "low_freq": 3,
+    "geom_type": "sphere",
+    "links_per_side": 5,
+    "tau": 0.7
+}

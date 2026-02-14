@@ -1,8 +1,8 @@
 """
 
 Configuration parameters for the simulation. 
-Every variable is in S.I. units. "refresh_every" is in units of simulation steps 
-and "run_control_every" is in seconds.
+Every variable is in S.I. units. "refresh_every," "record_com_every" are in units of simulation steps. 
+"run_control_every" and "log_sim_time" are in simulation seconds.
 
 """
 
@@ -17,8 +17,12 @@ class SimulationConfig:
 
     # Graphics parameters
     headless: bool = False
-    refresh_every: int = 100
+    render_every: int = 100
     plane_length_factor: float = 10
+
+    # Data collection parameters
+    record_com_every: int = 25
+    log_sim_time_every: float = 5
 
     # Particle parameters
     particle_radius: float = 0.019
@@ -34,6 +38,7 @@ class SimulationConfig:
     high_freq: float = 10
     low_freq: float = 3
     phase_noise_std: float = 0.05
+    noise_phase_every: float = 0.1
 
     # Simulation parameters
     size: int = 64

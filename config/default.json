@@ -1,8 +1,10 @@
 {
-    "sim_duration": 20,
+    "size": 100,
+    "sim_duration": 15,
     "high_freq": 10,
-    "low_freq": 3,
+    "low_freq": 4,
     "geom_type": "sphere",
     "links_per_side": 5,
-    "tau": 0.7
+    "tau": 0.7,
+    "target_direction": [1, 0]
 }

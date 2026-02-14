@@ -1,12 +1,23 @@
 """
-Docstring for config
+
+Configuration parameters for the simulation. 
+Every variable is in S.I. units. "refresh_every" is in units of simulation steps 
+and "run_control_every" is in seconds.
+
 """
 
 from dataclasses import dataclass
+from math import pi
 import json
 
 @dataclass
 class SimulationConfig:
+
+    seed: int | None = None
+
+    # Graphics parameters
+    headless: bool = False
+    refresh_every: int = 100
 
     # Particle parameters
     particle_radius: float = 0.019
@@ -14,8 +25,8 @@ class SimulationConfig:
     particle_mass: float = 0.26
     rotor_mass: float = 0.056
     geom_type: str = "sphere"
-    particle_solref: list = [0.003, 1]
-    particle_solimp: list = [0.95, 0.95, 0.005]
+    particle_solref: tuple = (0.003, 1)
+    particle_solimp: tuple = (0.95, 0.95, 0.005)
     particle_clearance: float = 1e-05
 
     # Gradient parameters
@@ -36,8 +47,8 @@ class SimulationConfig:
     tau: float = 0.7
     link_radius: float = 0.019
     link_mass: float = 0.0155
-    link_solref: list = [0.003, 1]
-    link_solimp: list = [0.9, 0.9, 0.005]
+    link_solref: tuple = (0.003, 1)
+    link_solimp: tuple = (0.9, 0.9, 0.005)
 
     # Control parameters
     target_direction: tuple = (1, 0)
@@ -48,3 +59,17 @@ class SimulationConfig:
         with open(path) as f:
             data = json.load(f)
         return cls(**data)
+    
+    def to_dict(self):
+        return dict(self.__dict__)
+    
+    def __post_init__(self):
+        if self.geom_type not in ["sphere", "cylinder"]:
+            raise ValueError(f"'{self.geom_type}' is not a valid particle geom type. Use 'sphere' or 'cylinder'.")
+        
+        if self.solver not in ["PGS", "Newton", "CG"]:
+            raise ValueError(f"'{self.solver}' is not a valid solver in MuJoCo. Use 'PGS' or 'Newton', or 'CG'.")
+        
+        if self.tau < 0 or self.tau > pi / 4:
+            raise ValueError("Chain tightness ratio (tau) must be positive and less than pi / 4 (0.785 approx.).")
+

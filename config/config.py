@@ -11,7 +11,7 @@ class SimulationConfig:
     # Particle parameters
     particle_radius: float = 0.019
     cylinder_halflen: float = 0.019
-    particle_mass: float = 4 * 0.014
+    particle_mass: float = 0.26
     rotor_mass: float = 0.056
     geom_type: str = "sphere"
 
@@ -34,7 +34,6 @@ class SimulationConfig:
     # Control parameters
     target_direction: tuple = (1, 0)
     run_control_every: float = 0.05
-
 
     @classmethod
     def from_json(cls, path):

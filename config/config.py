@@ -78,4 +78,6 @@ class SimulationConfig:
         
         if self.tau < 0 or self.tau > pi / 4:
             raise ValueError("Chain tightness ratio (tau) must be positive and less than pi / 4 (0.785 approx.).")
+        
+        self.target_direction = tuple(self.target_direction)
 

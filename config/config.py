@@ -18,6 +18,7 @@ class SimulationConfig:
     # Graphics parameters
     headless: bool = False
     refresh_every: int = 100
+    plane_length_factor: float = 10
 
     # Particle parameters
     particle_radius: float = 0.019

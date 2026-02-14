@@ -2,7 +2,7 @@
 Docstring for xml_builder
 """
 
-from chain import create_chain_xml
+from .chain import create_chain_xml
 import math
 
 

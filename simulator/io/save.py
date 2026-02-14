@@ -29,3 +29,23 @@ def save_single_run(config, data, label=None):
     np.save(os.path.join(dir_path, "com.npy"), data)
 
     return dir_path
+
+
+def save_1d_sweep(base_config, results_dict, target_parameter, label=None):
+
+    dir_path = create_run_directory(label)
+
+    with open(os.path.join(dir_path, "base_config.json"), "w") as file:
+        json.dump(base_config.to_dict(), file, indent=4)
+    
+    with open(os.path.join(dir_path, "sweep_metadata.json"), "w") as file:
+        metadata = {
+            "target_parameter": target_parameter,
+            "values": list(results_dict.keys())
+        }
+        json.dump(metadata, file, indent=4)
+    
+    for value, com in results_dict.items():
+        np.save(os.path.join(dir_path, f"{target_parameter}_{value}.npy"), com)
+
+    return dir_path

@@ -21,6 +21,7 @@ class SimulationConfig:
     plane_length_factor: float = 10
 
     # Data collection parameters
+    runs: int = 1
     record_com_every: int = 25
     log_sim_time_every: float = 5
 

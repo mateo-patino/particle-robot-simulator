@@ -3,7 +3,7 @@ from copy import deepcopy
 
 """
 Parameters: a number of runs and a configuration object
-Returns: a dictionary of the results of the simulation
+Returns: a dictionary of the results of the simulation where the keys represent the run numbers
 """
 
 def run_single(config, num_runs):

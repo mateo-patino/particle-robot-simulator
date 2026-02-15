@@ -16,7 +16,7 @@ class SimulationConfig:
     seed: int | None = None
 
     # Graphics parameters
-    headless: bool = False
+    gui: bool = False
     render_every: int = 100
     plane_length_factor: float = 10
 

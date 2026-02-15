@@ -5,7 +5,7 @@ from copy import deepcopy
 
 Parameters: configuration, parameter to sweep, values to sweep over.
 Returns: A 2D Python dictionary where the first dimension of keys corresponds to the value
-in the parameter space, and the second dimension of keys corresponds to the run number.
+(as a string) in the parameter space, and the second dimension of keys corresponds to the run number.
 
 """
 

@@ -1,3 +1,14 @@
+"""
+This is the entry point for the simulator. If you wish to interact with the simulator,
+you will most likely want to call this script and pass command-line arguments to it.
+
+Only one command-line argument is required: --config. This is the path to a .json file
+containing the configurations parameters needed to run a simulation. You must always
+provide this argument.
+
+"""
+
+
 from config.config import SimulationConfig
 from simulator.experiments.sweep import run_1d_sweep
 import argparse

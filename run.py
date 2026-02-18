@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--gui",
         action="store_true",
-        help="Disable graphic visualization"
+        help="Enable graphic visualization"
     )
 
     parser.add_argument(

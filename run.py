@@ -11,6 +11,7 @@ provide this argument.
 
 from config.config import SimulationConfig
 from simulator.experiments.sweep import run_1d_sweep
+from simulator.io.save import save_1d_sweep
 import argparse
 
 if __name__ == "__main__":
@@ -73,6 +74,9 @@ if __name__ == "__main__":
 
     # Run simulation in desired mode (sweep or not sweep)
     if args.sweep is not None:
+
+        print("\nRunning in SWEEP mode...")
+
         target_parameter = args.sweep
 
         if len(args.sweep_values) == 0:
@@ -84,18 +88,6 @@ if __name__ == "__main__":
         # Run 1-dimensional sweep
         sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs)
 
-        # TODO: 1) Save for sweep mode 2) Execute single-run mode
-
-
-
+        # Save results
+        save_1d_sweep(config, sweep_results, target_parameter, label=args.label)
     
-    
-
-    
-
-        
-
-
-
-
-

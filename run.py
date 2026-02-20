@@ -108,7 +108,7 @@ if __name__ == "__main__":
         # Save results
         if not args.no_save:
             results_path = save_single_run(config, single_run_results, label=args.label)
-            print(f"\nResults saved to \"{results_path}\"")
+            print(f"\nResults saved to directory \"{results_path}\"")
 
 
-    
+# TODO: investigate why they high_freq sweep results look odd.  

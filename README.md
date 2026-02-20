@@ -1,12 +1,12 @@
-# 🚀 Particle Robot Simulator
+# 🤖 Vibrating Particle Robot Simulator
 
-A modular MuJoCo-based simulation framework for studying collective particle robots with gradient-based control.
+A MuJoCo-based simulation framework for studying vibrating particle robots with gradient-based control.
 
-Developed at the Creative Machines Lab, Columbia University.
+Developed at the Creative Machines Laboratory, Columbia University.
 
 ---
 
-## 📌 Features
+## 📌 Overview
 
 - Config-driven simulation (JSON-based)
 - Headless or GUI execution

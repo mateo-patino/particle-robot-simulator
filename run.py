@@ -11,7 +11,8 @@ provide this argument.
 
 from config.config import SimulationConfig
 from simulator.experiments.sweep import run_1d_sweep
-from simulator.io.save import save_1d_sweep
+from simulator.experiments.single_run import run_single
+from simulator.io.save import save_single_run, save_1d_sweep
 import argparse
 
 if __name__ == "__main__":
@@ -66,6 +67,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Load sim configuration from provided JSON file
     config = SimulationConfig.from_json(args.config)
 
     # Override config parameters
@@ -94,5 +96,19 @@ if __name__ == "__main__":
         # Save results
         if not args.no_save:
             results_path = save_1d_sweep(config, sweep_results, target_parameter, label=args.label)
-            print(f"\nSaving results to \"{results_path}\"")
+            print(f"\nResults saved to \"{results_path}\"")
+
+    else:
+
+        print("\nRunning in SINGLE mode...")
+
+        # Run simulation
+        single_run_results = run_single(config, args.runs)
+
+        # Save results
+        if not args.no_save:
+            results_path = save_single_run(config, single_run_results, label=args.label)
+            print(f"\nResults saved to \"{results_path}\"")
+
+
     

@@ -79,8 +79,11 @@ if __name__ == "__main__":
 
         target_parameter = args.sweep
 
-        if len(args.sweep_values) == 0:
+        if args.sweep_values is None or len(args.sweep_values) == 0:
             raise ValueError("You must provide a list of space-separated values for the sweep via --sweep_values")
+        
+        if not hasattr(config, target_parameter):
+            raise ValueError(f"Cannot sweep \"{target_parameter}\": not a valid configuration parameter.")
         
         attr_type = type(getattr(config, target_parameter))
         values = [attr_type(v) for v in args.sweep_values]
@@ -89,5 +92,7 @@ if __name__ == "__main__":
         sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs)
 
         # Save results
-        save_1d_sweep(config, sweep_results, target_parameter, label=args.label)
+        if not args.no_save:
+            results_path = save_1d_sweep(config, sweep_results, target_parameter, label=args.label)
+            print(f"\nSaving results to \"{results_path}\"")
     

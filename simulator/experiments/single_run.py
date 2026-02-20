@@ -18,6 +18,8 @@ def run_single(config, num_runs):
         else:
             sim = Simulation(config)
 
+        print(f"\nRun {run} started.........")
         results[run] = sim.run()
+        print(f"\nRun {run} complete")
 
     return results

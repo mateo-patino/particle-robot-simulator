@@ -1,0 +1,11 @@
+{
+    "size": 64,
+    "sim_duration": 10,
+    "high_freq": 10,
+    "low_freq": 5,
+    "geom_type": "sphere",
+    "links_per_side": 5,
+    "tau": 0.6,
+    "target_direction": [1, 1],
+    "record_com_every": 15
+}

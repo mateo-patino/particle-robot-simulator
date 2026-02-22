@@ -110,6 +110,6 @@ results/frequency-sweep__2026-01-01_00-00-00
 The metadata includes the number of runs per parameter value, the parameter swept, and the values.
 
 ## Reproducibility
-For both single-run and sweep modes, if a seed is specified in the JSON configuration file, the first simulatin run will use this seed. Subsequent runs will increment the seed by +1 to ensure variability across runs while maintaning reproducibility.
+For both single-run and sweep modes, if a seed is specified in the JSON configuration file, the first simulation run will use this seed. Subsequent runs will increment the seed by +1 to ensure variability across runs while maintaning reproducibility.
 
 By default, seed is `null`, so all simulations are stochastic.

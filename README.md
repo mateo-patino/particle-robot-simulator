@@ -64,6 +64,7 @@ The only form of data that the simulation records is the **position of the cente
 
 ```bash
 tree results/2026-01-01_00-00-00
+
 results/2026-01-01_00-00-00
 ├── com_1.npy
 ├── config.json
@@ -92,9 +93,10 @@ For example, the following command sweeps the high-frequency parameter (i.e the 
 ```bash
 python run.py --config example_config.json --sweep high_freq --sweep_values 8 9 10 --runs 2 --label "frequency-sweep"
 ```
-The results of this set of simulations will be saved to a timestamped subfolder of th
+The results of this set of simulations will be saved to a timestamped subfolder like this,
 ```
 tree results/frequency-sweep__2026-01-01_00-00-00
+
 results/frequency-sweep__2026-01-01_00-00-00
 ├── high_freq_8_1.npy
 ├── high_freq_8_2.npy

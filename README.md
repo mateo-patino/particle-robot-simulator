@@ -69,6 +69,8 @@ results/2026-01-01_00-00-00
 ├── config.json
 └── metadata.json
 ```
+Timestamps are used to avoid accidentally overwriting data.
+
 ### Labels
 You can add a **label** to the subfolder in which results are saved via `--label`. The label will be placed before the timestamp in the subfolder name.
 ```bash

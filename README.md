@@ -60,7 +60,7 @@ python run.py --config example_config.json --runs 20 --gui
 ```
 
 ### Results
-The only form of data that the simulation records is the **position of the center of mass** of the particle robot during the simulation. When the simulation(s) end(s), a `results` folder will be created. Inside of it, a **timestamped** folder will contain the center-of-mass data alongside metadata of the simulation.
+The simulation records the **position of the center of mass** of the particle robot during the simulation. When the simulation(s) end(s), a `results` folder will be created. Inside of it, a **timestamped** folder will contain the center-of-mass data alongside metadata of the simulation.
 
 ```bash
 tree results/2026-01-01_00-00-00
@@ -84,7 +84,7 @@ To perform a parameter sweep, you must pass values for the `--sweep` and `--swee
 ```bash
 python run.py --config example_config.json --sweep size --sweep_values 100 200 300 400 500 --runs 15 
 ```
-The command above will sweep the simulation's size parameter (i.e. the total number of vribrating particles) over the values 100, 200, 300, 400, and 500. It will perform 15 runs **for each** value in `--sweep_values`.
+The command above will sweep the simulation's size parameter (i.e. the total number of vibrating particles) over the values 100, 200, 300, 400, and 500. It will perform 15 runs **for each** value in `--sweep_values`.
 
 ### Sweep Results
 The center-of-mass data collected in each simulation is saved to timestamped folders inside a `results` folder. The name of each data file will be prefixed by the **name of parameter swept** and the specific **value** of the parameter in that run, followed by the **run number**.
@@ -107,3 +107,9 @@ results/frequency-sweep__2026-01-01_00-00-00
 ├── base_config.json
 └── sweep_metadata.json
 ```
+The metadata includes the number of runs per parameter value, the parameter swept, and the values.
+
+## Reproducibility
+For both single-run and sweep modes, if a seed is specified in the JSON configuration file, the first simulatin run will use this seed. Subsequent runs will increment the seed by +1 to ensure variability across runs while maintaning reproducibility.
+
+By default, seed is `null`, so all simulations are stochastic.

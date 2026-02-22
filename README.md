@@ -42,7 +42,9 @@ To perform a single-run, use
 ```bash
 python run.py --config example_config.json 
 ```
-The command above runs one simulation using the parameter values specified in `example_config.json `. `--config` is the only required command-line argument of `run.py`, and it must be the path to a `JSON` file that contains the custom simulation parameters you wish to use. See here (TODO) for all simulation parameter values available.
+The command above runs one simulation using the parameter values specified in `example_config.json `. 
+
+`--config` is the only required command-line argument of `run.py`, and it must be the path to a `JSON` file that contains the custom simulation parameters you wish to use. See here (TODO) for all simulation parameter values available.
 
 ### Multiple Runs
 If you wish to run a simulation multiple times, you can pass a value into `--runs`

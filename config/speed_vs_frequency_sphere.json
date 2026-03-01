@@ -1,7 +1,7 @@
 {
     "seed": null,
 
-    "headless": true,
+    "gui": false,
     "render_every": 100,
     "plane_length_factor": 4,
     "record_com_every": 25,

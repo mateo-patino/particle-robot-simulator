@@ -73,7 +73,7 @@ def create_xml(config: SimulationConfig) -> str:
 
     # Worldbody
     worldbody = ET.SubElement(root, "worldbody")
-    ET.SubElement(worldbody, "camera", name="top", pos="0 0 1", quat="0 1 0 0", mode="fixed")
+    ET.SubElement(worldbody, "camera", name="top", pos="0 0 1", quat="1 0 0 0", mode="fixed")
     ET.SubElement(worldbody, "geom", name="floor", type="plane",
                   size=f"{plane_length} {plane_length} 0.1",
                   material="gridmat", rgba="1 1 1 1")

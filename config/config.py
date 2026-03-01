@@ -1,10 +1,12 @@
 """
 
-Configuration parameters for the simulation. 
-Every variable is in S.I. units. "refresh_every," "record_com_every" are in units of simulation steps. 
+Configuration parameters for the simulation.
+Every variable is in S.I. units. "refresh_every," "record_com_every" are in units of simulation steps.
 "run_control_every" and "log_sim_time" are in simulation seconds.
 
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass
 from math import pi
@@ -17,6 +19,8 @@ class SimulationConfig:
 
     # Graphics parameters
     gui: bool = False
+    record: bool = False
+    video_path: str | None = None
     render_every: int = 100
     plane_length_factor: float = 10
 
@@ -61,23 +65,22 @@ class SimulationConfig:
     run_control_every: float = 0.05
 
     @classmethod
-    def from_json(cls, path):
+    def from_json(cls, path: str) -> SimulationConfig:
         with open(path) as f:
             data = json.load(f)
         return cls(**data)
-    
-    def to_dict(self):
+
+    def to_dict(self) -> dict:
         return dict(self.__dict__)
-    
-    def __post_init__(self):
+
+    def __post_init__(self) -> None:
         if self.geom_type not in ["sphere", "cylinder"]:
             raise ValueError(f"'{self.geom_type}' is not a valid particle geom type. Use 'sphere' or 'cylinder'.")
-        
+
         if self.solver not in ["PGS", "Newton", "CG"]:
             raise ValueError(f"'{self.solver}' is not a valid solver in MuJoCo. Use 'PGS' or 'Newton', or 'CG'.")
-        
+
         if self.tau < 0 or self.tau > pi / 4:
             raise ValueError("Chain tightness ratio (tau) must be positive and less than pi / 4 (0.785 approx.).")
-        
-        self.target_direction = tuple(self.target_direction)
 
+        self.target_direction = tuple(self.target_direction)

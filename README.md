@@ -57,7 +57,7 @@ The command above will run a simulation with the parameter values from `example_
 If you wish to open a window to visualize the simulation, you can enable the `--gui` flag. If you are on MacOS, you need to call `run.py` via `mjpython`.
 ```bash
 python run.py --config example_config.json --runs 20 --gui
-python run.py --config example_config.json --runs 20 --gui # MacOS
+mjpython run.py --config example_config.json --runs 20 --gui # MacOS
 ```
 
 ### Results

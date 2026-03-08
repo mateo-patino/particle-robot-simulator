@@ -60,8 +60,8 @@ class Simulation:
             renderer = mujoco.Renderer(model, height=480, width=640)
 
         # Initialize frequencies, colors, phases, and geom IDs
-        freq = np.array([rng.choice([low_freq, high_freq]) for i in range(size)])
-        color = np.array([True for i in range(size)]) # True for red False for blue
+        freq = rng.choice([low_freq, high_freq], size=size)
+        color = np.ones(size, dtype=bool) # True for red False for blue
         phases = rng.uniform(0, 2 * np.pi, size=size)
         geomID = np.empty(size, dtype=np.int32)
         sign = self.initialize_directions(rng)
@@ -71,11 +71,13 @@ class Simulation:
             if gid == -1:
                 raise RuntimeError(f"Geom '{geom_type}{i}' not found in model")
             geomID[i] = gid
-            if color[i]:
-                model.geom_rgba[gid, :] = [1.0, 0.2, 0.2, 1.0]
-            else:
-                model.geom_rgba[gid, :] = [0.2, 0.4, 1.0, 1.0]
 
+        # Vectorized RGBA init
+        model.geom_rgba[geomID[color]] = [1.0, 0.2, 0.2, 1.0]
+        model.geom_rgba[geomID[~color]] = [0.2, 0.4, 1.0, 1.0]
+
+        # Pre-compute body IDs for force application
+        body_ids = np.arange(1, size + 1)
 
         # Data buffers
         EXPECTED_SAMPLE_SIZE = int((SIM_DURATION / timestep) / RECORD_COM_EVERY)
@@ -94,8 +96,7 @@ class Simulation:
 
             # Record positions
             if (steps_done % RECORD_COM_EVERY == 0):
-                for i in range(size):
-                    current_positions[i, :] = data.geom_xpos[geomID[i]][:2]
+                current_positions[:] = data.geom_xpos[geomID, :2]
                 COM_POSITION[samples_taken, :] = np.mean(current_positions, axis=0)
                 samples_taken += 1
 
@@ -103,27 +104,24 @@ class Simulation:
             if (data.time - LAST_ALG_RUN > RUN_ALG_EVERY):
 
                 # Find the position of all particles at the current step
-                for i in range(size):
-                    current_positions[i, :] = data.geom_xpos[geomID[i]][:2]
+                current_positions[:] = data.geom_xpos[geomID, :2]
                 com = np.mean(current_positions, axis=0)
 
                 # Determine colors and frequencies
-                for i in range(size):
-                    if np.dot(target_direction, current_positions[i] - com) > 0:
-                        freq[i] = low_freq
-                        color[i] = False
-                    else:
-                        freq[i] = high_freq
-                        color[i] = True
+                dots = (current_positions - com) @ target_direction
+                mask = dots > 0
+                freq[mask] = low_freq
+                freq[~mask] = high_freq
+                color[mask] = False
+                color[~mask] = True
 
-                for i in range(size):
-                    if color[i]:
-                        model.geom_rgba[geomID[i], :] = [1.0, 0.1, 0.1, 1.0]
-                    else:
-                        model.geom_rgba[geomID[i], :] = [0.1, 0.1, 1.0, 1.0]
+                # Update RGBA
+                model.geom_rgba[geomID[color]] = [1.0, 0.1, 0.1, 1.0]
+                model.geom_rgba[geomID[~color]] = [0.1, 0.1, 1.0, 1.0]
 
                 LAST_ALG_RUN = data.time
 
+                # Add noise to the phases periodically.
                 if (data.time - LAST_PHASE_NOISE > NOISE_PHASE_EVERY):
                     phases = phases + rng.normal(0, phase_noise_std * phases, size=size)
                     LAST_PHASE_NOISE = data.time
@@ -131,8 +129,9 @@ class Simulation:
             # Update forces
             fx = 4 * (np.pi**2) * R * m * (freq**2) * np.cos(sign * 2 * np.pi * freq * data.time + phases)
             fy = 4 * (np.pi**2) * R * m * (freq**2) * np.sin(sign * 2 * np.pi * freq * data.time + phases)
-            for i in range(size):
-                data.xfrc_applied[i + 1, :3] = [fx[i], fy[i], 0]
+            data.xfrc_applied[body_ids, 0] = fx
+            data.xfrc_applied[body_ids, 1] = fy
+            data.xfrc_applied[body_ids, 2] = 0.0
 
             mujoco.mj_step(model, data)
             steps_done += 1

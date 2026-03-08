@@ -8,12 +8,15 @@ provide this argument.
 
 """
 
+import logging
 
 from config.config import SimulationConfig
 from simulator.experiments.sweep import run_1d_sweep
 from simulator.experiments.single_run import run_single
 from simulator.io.save import save_single_run, save_1d_sweep
 import argparse
+
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
 
@@ -30,6 +33,12 @@ if __name__ == "__main__":
         "--gui",
         action="store_true",
         help="Enable graphic visualization"
+    )
+
+    parser.add_argument(
+        "--record",
+        action="store_true",
+        help="Record simulation to video file"
     )
 
     parser.add_argument(
@@ -65,7 +74,20 @@ if __name__ == "__main__":
         help="Disable automatic saving of simulation results"
     )
 
+    parser.add_argument(
+        "--log_level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING"],
+        help="Set logging verbosity (default: INFO)"
+    )
+
     args = parser.parse_args()
+
+    logging.basicConfig(
+        level=getattr(logging, args.log_level),
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        datefmt="%H:%M:%S",
+    )
 
     # Load sim configuration from provided JSON file
     config = SimulationConfig.from_json(args.config)
@@ -73,34 +95,36 @@ if __name__ == "__main__":
     # Override config parameters
     if args.gui:
         config.gui = True
+    if args.record:
+        config.record = True
 
     # Run simulation in desired mode (sweep or not sweep)
     if args.sweep is not None:
 
-        print("\nRunning in SWEEP mode...")
+        logger.info("Running in SWEEP mode...")
 
         target_parameter = args.sweep
 
         if args.sweep_values is None or len(args.sweep_values) == 0:
             raise ValueError("You must provide a list of space-separated values for the sweep via --sweep_values")
-        
+
         if not hasattr(config, target_parameter):
             raise ValueError(f"Cannot sweep \"{target_parameter}\": not a valid configuration parameter.")
-        
+
         attr_type = type(getattr(config, target_parameter))
         values = [attr_type(v) for v in args.sweep_values]
-    
+
         # Run 1-dimensional sweep
         sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs)
 
         # Save results
         if not args.no_save:
             results_path = save_1d_sweep(config, sweep_results, target_parameter, label=args.label)
-            print(f"\nResults saved to \"{results_path}\"")
+            logger.info("Results saved to \"%s\"", results_path)
 
     else:
 
-        print("\nRunning in SINGLE mode...")
+        logger.info("Running in SINGLE mode...")
 
         # Run simulation
         single_run_results = run_single(config, args.runs)
@@ -108,7 +132,7 @@ if __name__ == "__main__":
         # Save results
         if not args.no_save:
             results_path = save_single_run(config, single_run_results, label=args.label)
-            print(f"\nResults saved to directory \"{results_path}\"")
+            logger.info("Results saved to directory \"%s\"", results_path)
 
 
-# TODO: investigate why they high_freq sweep results look odd.  
+# TODO: investigate why they high_freq sweep results look odd.

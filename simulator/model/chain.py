@@ -29,7 +29,7 @@ def add_chain_elements(parent: ET.Element, config: SimulationConfig) -> None:
 
 
 def link_length(config: SimulationConfig) -> float:
-    particle_area = config.size * math.pi * pow(config.particle_radius, 2)
+    particle_area = config.size * math.pi * pow(config.particle_radius + (config.particle_clearance / 2), 2)
     return (1 / config.links_per_side) * math.sqrt(particle_area / config.tau) + (2 * config.link_radius / config.links_per_side)
 
 

@@ -21,7 +21,7 @@
     "low_freq": 0,
     "phase_noise_std": 0.05,
 
-    "sim_duration": 10,
+    "sim_duration": 20,
     "timestep": 7e-05,
     "solver": "Newton",
     "iterations": 100,

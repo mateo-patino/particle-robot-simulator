@@ -20,7 +20,7 @@ Though this is not necessary, it is highly recommended to use a virtual environm
 
 ```bash
 python -m venv venv
-source venv/bin/activate # Mac/Linux
+source venv/bin/activate # MacOS/Linux
 venv\Scripts\activate # Windows
 ```
 
@@ -54,9 +54,10 @@ python run.py --config example_config.json --runs 20
 The command above will run a simulation with the parameter values from `example_config.json` 20 times.
 
 ### Graphics
-If you wish to open a window to visualize the simulation, you can enable the `--gui` flag (***NOTE: still in development***)
+If you wish to open a window to visualize the simulation, you can enable the `--gui` flag. If you are on MacOS, you need to call `run.py` via `mjpython`.
 ```bash
 python run.py --config example_config.json --runs 20 --gui
+mjpython run.py --config example_config.json --runs 20 --gui # MacOS
 ```
 
 ### Results

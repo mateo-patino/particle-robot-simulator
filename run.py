@@ -15,6 +15,7 @@ from simulator.experiments.sweep import run_1d_sweep
 from simulator.experiments.single_run import run_single
 from simulator.io.save import save_single_run, save_1d_sweep
 from typing import get_type_hints
+from sys import argv
 import argparse
 
 logger = logging.getLogger(__name__)
@@ -120,7 +121,7 @@ if __name__ == "__main__":
 
         # Save results
         if not args.no_save:
-            results_path = save_1d_sweep(config, sweep_results, target_parameter, label=args.label)
+            results_path = save_1d_sweep(config, sweep_results, target_parameter, argv=argv, label=args.label)
             logger.info("Results saved to \"%s\"", results_path)
 
     else:
@@ -132,8 +133,5 @@ if __name__ == "__main__":
 
         # Save results
         if not args.no_save:
-            results_path = save_single_run(config, single_run_results, label=args.label)
+            results_path = save_single_run(config, single_run_results, argv=argv, label=args.label)
             logger.info("Results saved to directory \"%s\"", results_path)
-
-
-# TODO: investigate why they high_freq sweep results look odd.

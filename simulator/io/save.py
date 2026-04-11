@@ -20,7 +20,8 @@ def create_run_directory(label: str | None = None) -> str:
     return path
 
 
-def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray], label: str | None = None) -> str:
+def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray], 
+                    argv: list[str] | None = None, label: str | None = None) -> str:
 
     dir_path = create_run_directory(label)
 
@@ -28,8 +29,10 @@ def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray], label
         json.dump(config.to_dict(), file, indent=4)
 
     with open(os.path.join(dir_path, "metadata.json"), "w") as file:
+        cmd = " ".join(argv).strip() if argv is not None else "argv is None"
         metadata = {
             "runs": len(data),
+            "cmd": cmd
         }
         json.dump(metadata, file, indent=4)
 
@@ -39,7 +42,8 @@ def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray], label
     return dir_path
 
 
-def save_1d_sweep(base_config: SimulationConfig, results_dict: dict[str, dict[int, np.ndarray]], target_parameter: str, label: str | None = None) -> str:
+def save_1d_sweep(base_config: SimulationConfig, results_dict: dict[str, dict[int, np.ndarray]], 
+                  target_parameter: str, argv: list[str] | None = None, label: str | None = None) -> str:
 
     dir_path = create_run_directory(label)
 
@@ -47,10 +51,12 @@ def save_1d_sweep(base_config: SimulationConfig, results_dict: dict[str, dict[in
         json.dump(base_config.to_dict(), file, indent=4)
 
     with open(os.path.join(dir_path, "sweep_metadata.json"), "w") as file:
+        cmd = " ".join(argv).strip() if argv is not None else "argv is None"
         metadata = {
             "target_parameter": target_parameter,
             "values": list(results_dict.keys()),
-            "runs": len(next(iter(results_dict.values())))
+            "runs": len(next(iter(results_dict.values()))),
+            "cmd": cmd
         }
         json.dump(metadata, file, indent=4)
 

@@ -90,7 +90,7 @@ def test_from_json_example_config():
 
 def test_from_json_speed_vs_frequency_config():
     """The speed_vs_frequency config should load after fixing the stale 'headless' key."""
-    config = SimulationConfig.from_json("config/speed_vs_frequency_sphere.json")
+    config = SimulationConfig.from_json("config/paper_experiments/speed_vs_frequency_sphere.json")
     assert config.gui is False
 
 

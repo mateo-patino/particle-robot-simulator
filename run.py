@@ -14,6 +14,7 @@ from config.config import SimulationConfig
 from simulator.experiments.sweep import run_1d_sweep
 from simulator.experiments.single_run import run_single
 from simulator.io.save import save_single_run, save_1d_sweep
+from typing import get_type_hints
 import argparse
 
 logger = logging.getLogger(__name__)
@@ -111,7 +112,7 @@ if __name__ == "__main__":
         if not hasattr(config, target_parameter):
             raise ValueError(f"Cannot sweep \"{target_parameter}\": not a valid configuration parameter.")
 
-        attr_type = type(getattr(config, target_parameter))
+        attr_type = get_type_hints(config)[target_parameter]
         values = [attr_type(v) for v in args.sweep_values]
 
         # Run 1-dimensional sweep

@@ -20,8 +20,8 @@ def create_run_directory(label: str | None = None) -> str:
     return path
 
 
-def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray], 
-                    argv: list[str] | None = None, label: str | None = None) -> str:
+def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray], argv: list[str] | None = None, 
+                    label: str | None = None, existing_runs: int = 0) -> str:
 
     dir_path = create_run_directory(label)
 
@@ -32,18 +32,19 @@ def save_single_run(config: SimulationConfig, data: dict[int, np.ndarray],
         cmd = " ".join(argv).strip() if argv is not None else "argv is None"
         metadata = {
             "runs": len(data),
+            "existing_runs": existing_runs,
             "cmd": cmd
         }
         json.dump(metadata, file, indent=4)
 
     for run, com_data in data.items():
-        np.save(os.path.join(dir_path, f"com_{run}.npy"), com_data)
+        np.save(os.path.join(dir_path, f"com_{existing_runs + run}.npy"), com_data)
 
     return dir_path
 
 
-def save_1d_sweep(base_config: SimulationConfig, results_dict: dict[str, dict[int, np.ndarray]], 
-                  target_parameter: str, argv: list[str] | None = None, label: str | None = None) -> str:
+def save_1d_sweep(base_config: SimulationConfig, results_dict: dict[str, dict[int, np.ndarray]], target_parameter: str, 
+                  argv: list[str] | None = None, label: str | None = None, existing_runs: int = 0) -> str:
 
     dir_path = create_run_directory(label)
 
@@ -56,12 +57,13 @@ def save_1d_sweep(base_config: SimulationConfig, results_dict: dict[str, dict[in
             "target_parameter": target_parameter,
             "values": list(results_dict.keys()),
             "runs": len(next(iter(results_dict.values()))),
+            "existing_runs": existing_runs,
             "cmd": cmd
         }
         json.dump(metadata, file, indent=4)
 
     for value, run_dict in results_dict.items():
         for run, data in run_dict.items():
-            np.save(os.path.join(dir_path, f"{target_parameter}_{value}_{run}.npy"), data)
+            np.save(os.path.join(dir_path, f"{target_parameter}_{value}_{existing_runs + run}.npy"), data)
 
     return dir_path

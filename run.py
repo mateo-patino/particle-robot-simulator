@@ -51,6 +51,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--existing_runs",
+        type=int,
+        default=0,
+        help="Start naming result files at existing_runs + 1"
+    )
+
+    parser.add_argument(
         "--sweep",
         default=None,
         type=str,
@@ -121,7 +128,8 @@ if __name__ == "__main__":
 
         # Save results
         if not args.no_save:
-            results_path = save_1d_sweep(config, sweep_results, target_parameter, argv=argv, label=args.label)
+            results_path = save_1d_sweep(config, sweep_results, target_parameter, argv=argv, label=args.label, 
+                                         existing_runs=args.existing_runs)
             logger.info("Results saved to \"%s\"", results_path)
 
     else:
@@ -133,5 +141,5 @@ if __name__ == "__main__":
 
         # Save results
         if not args.no_save:
-            results_path = save_single_run(config, single_run_results, argv=argv, label=args.label)
+            results_path = save_single_run(config, single_run_results, argv=argv, label=args.label, existing_runs=args.existing_runs)
             logger.info("Results saved to directory \"%s\"", results_path)

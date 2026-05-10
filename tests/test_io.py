@@ -52,3 +52,70 @@ def test_save_1d_sweep(tmp_path, monkeypatch):
     assert os.path.exists(os.path.join(path, "sweep_metadata.json"))
     assert os.path.exists(os.path.join(path, "size_10_1.npy"))
     assert os.path.exists(os.path.join(path, "size_20_1.npy"))
+
+
+def test_save_single_run_existing_runs(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    config = SimulationConfig(size=4)
+    data = {
+        1: np.zeros((10, 2)),
+        2: np.ones((10, 2)),
+    }
+
+    path = save_single_run(
+        config,
+        data,
+        label="test_existing_runs",
+        existing_runs=10
+    )
+
+    # shifted filenames should exist
+    assert os.path.exists(os.path.join(path, "com_11.npy"))
+    assert os.path.exists(os.path.join(path, "com_12.npy"))
+
+    # original filenames should NOT exist
+    assert not os.path.exists(os.path.join(path, "com_1.npy"))
+    assert not os.path.exists(os.path.join(path, "com_2.npy"))
+
+    # metadata should include existing_runs
+    with open(os.path.join(path, "metadata.json")) as f:
+        meta = json.load(f)
+
+    assert meta["runs"] == 2
+    assert meta["existing_runs"] == 10
+
+
+def test_save_1d_sweep_existing_runs(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    config = SimulationConfig(size=4)
+
+    results = {
+        "10": {1: np.zeros((5, 2))},
+        "20": {1: np.ones((5, 2))}
+    }
+
+    path = save_1d_sweep(
+        config,
+        results,
+        "size",
+        label="sweep_existing_runs",
+        existing_runs=10
+    )
+
+    # shifted filenames should exist
+    assert os.path.exists(os.path.join(path, "size_10_11.npy"))
+    assert os.path.exists(os.path.join(path, "size_20_11.npy"))
+
+    # original filenames should NOT exist
+    assert not os.path.exists(os.path.join(path, "size_10_1.npy"))
+    assert not os.path.exists(os.path.join(path, "size_20_1.npy"))
+
+    # metadata check
+    with open(os.path.join(path, "sweep_metadata.json")) as f:
+        meta = json.load(f)
+
+    assert meta["runs"] == 1
+    assert meta["existing_runs"] == 10
+    assert meta["target_parameter"] == "size"

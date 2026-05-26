@@ -77,7 +77,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--no_-ave",
+        "--no-save",
         default=False,
         action="store_true",
         help="Disable automatic saving of simulation results"

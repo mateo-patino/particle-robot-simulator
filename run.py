@@ -51,7 +51,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--existing_runs",
+        "--existing-runs",
         type=int,
         default=0,
         help="Start naming result files at existing_runs + 1"
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--sweep_values",
+        "--sweep-values",
         nargs='+',
         help="A list of values to sweep"
     )
@@ -77,14 +77,14 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--no_save",
+        "--no_-ave",
         default=False,
         action="store_true",
         help="Disable automatic saving of simulation results"
     )
 
     parser.add_argument(
-        "--log_level",
+        "--log-level",
         default="INFO",
         choices=["DEBUG", "INFO", "WARNING"],
         help="Set logging verbosity (default: INFO)"

@@ -5,6 +5,7 @@
     "render_every": 100,
     "plane_length_factor": 4,
     "record_com_every": 25,
+    "log_sim_time_every": 0.5,
 
     "size": 100,
 

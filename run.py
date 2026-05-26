@@ -32,9 +32,36 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--existing-runs",
+        type=int,
+        default=0,
+        help="Start naming result files at existing_runs + 1"
+    )
+
+    parser.add_argument(
         "--gui",
         action="store_true",
         help="Enable graphic visualization"
+    )
+
+    parser.add_argument(
+        "--label",
+        type=str,
+        help="Insert a label in the path to the results directory"
+    )
+
+    parser.add_argument(
+        "--log-level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING"],
+        help="Set logging verbosity (default: INFO)"
+    )
+
+    parser.add_argument(
+        "--no-save",
+        default=False,
+        action="store_true",
+        help="Disable automatic saving of simulation results"
     )
 
     parser.add_argument(
@@ -51,13 +78,6 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--existing-runs",
-        type=int,
-        default=0,
-        help="Start naming result files at existing_runs + 1"
-    )
-
-    parser.add_argument(
         "--sweep",
         default=None,
         type=str,
@@ -68,26 +88,6 @@ if __name__ == "__main__":
         "--sweep-values",
         nargs='+',
         help="A list of values to sweep"
-    )
-
-    parser.add_argument(
-        "--label",
-        type=str,
-        help="Insert a label in the path to the results directory"
-    )
-
-    parser.add_argument(
-        "--no-save",
-        default=False,
-        action="store_true",
-        help="Disable automatic saving of simulation results"
-    )
-
-    parser.add_argument(
-        "--log-level",
-        default="INFO",
-        choices=["DEBUG", "INFO", "WARNING"],
-        help="Set logging verbosity (default: INFO)"
     )
 
     args = parser.parse_args()

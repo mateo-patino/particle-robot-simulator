@@ -40,7 +40,7 @@ Returns: an NumPy array containing the position data from the simulation
 """
 
 def run_fast_save(config: SimulationConfig, file_path: str) -> np.ndarray:
-    sim = SimulationConfig(config)
+    sim = Simulation(config)
     data = sim.run()
     np.save(file_path, data)
     return data

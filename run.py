@@ -11,7 +11,7 @@ provide this argument.
 import logging
 
 from config.config import SimulationConfig
-from simulator.experiments.sweep import run_1d_sweep
+from simulator.experiments.sweep import run_1d_sweep, run_1d_sweep_fs
 from simulator.experiments.single_run import run_single
 from simulator.io.save import save_single_run, save_1d_sweep
 from typing import get_type_hints
@@ -36,6 +36,12 @@ if __name__ == "__main__":
         type=int,
         default=0,
         help="Start naming result files at existing_runs + 1"
+    )
+
+    parser.add_argument(
+        "--fast-save",
+        action="store_true",
+        help="Save data to .npy file immediately after each simulation finishes"
     )
 
     parser.add_argument(
@@ -123,14 +129,25 @@ if __name__ == "__main__":
         attr_type = get_type_hints(config)[target_parameter]
         values = [attr_type(v) for v in args.sweep_values]
 
-        # Run 1-dimensional sweep
-        sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs)
+        results_path = None
 
-        # Save results
-        if not args.no_save:
-            results_path = save_1d_sweep(config, sweep_results, target_parameter, argv=argv, label=args.label, 
-                                         existing_runs=args.existing_runs)
+        if args.fast_save:
+            # Run sweep in fast-save mode 
+            results_path = run_1d_sweep_fs(config, target_parameter, values, num_runs=args.runs, argv=argv, label=args.label, 
+                            existing_runs=args.existing_runs)
+        else:
+            # Run 1-dimensional sweep without fast saving
+            sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs)
+
+            # Save results
+            if not args.no_save:
+                results_path = save_1d_sweep(config, sweep_results, target_parameter, argv=argv, label=args.label, 
+                                            existing_runs=args.existing_runs)
+
+        if results_path is not None:
             logger.info("Results saved to \"%s\"", results_path)
+        else:
+            logger.info("Results were not saved.")
 
     else:
 

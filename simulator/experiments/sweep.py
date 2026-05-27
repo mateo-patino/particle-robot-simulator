@@ -68,6 +68,8 @@ def run_1d_sweep_fs(config: SimulationConfig, target_parameter: str, values: lis
 
     logger.info("Sweeping complete")
 
+    return dir_path
+
 """
 
 This function performs a parameter sweep on 'target_parameter' over 'values' and returns a dict 

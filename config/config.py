@@ -17,12 +17,15 @@ class SimulationConfig:
 
     seed: int | None = None
 
+    # Environment additions
+    env_path: str | None = None
+
     # Graphics parameters
     gui: bool = False
     record: bool = False
     video_path: str | None = None
     render_every: int = 100
-    plane_length_factor: float = 10
+    plane_length_factor: float = 10 
 
     # Data collection parameters
     record_com_every: int = 25

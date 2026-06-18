@@ -3,11 +3,15 @@ Builds MuJoCo XML model strings for particle robot simulations
 using xml.etree.ElementTree for structured, validated output.
 """
 
+import logging
+
 from simulator.model.chain import add_chain_elements
 from config.config import SimulationConfig
+import os
 import math
 import xml.etree.ElementTree as ET
 
+logger = logging.getLogger(__name__)
 
 class Particle:
 
@@ -83,6 +87,16 @@ def create_xml(config: SimulationConfig) -> str:
 
     # Chain
     add_chain_elements(worldbody, config)
+
+    # Environment add-ons
+    if config.env_path is not None:
+        if os.path.exists(config.env_path):
+            env_root = ET.parse(config.env_path).getroot()
+            for child in env_root:
+                worldbody.append(child)
+            logger.info(f"Loaded {len(env_root)} environment elements from {config.env_path}")
+        else:
+            raise FileNotFoundError(f"Environment path {config.env_path} was not found.")
 
     # Tendon
     tendon = ET.SubElement(root, "tendon")

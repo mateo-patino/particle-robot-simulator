@@ -17,6 +17,7 @@ from simulator.io.save import save_single_run, save_1d_sweep
 from typing import get_type_hints
 from sys import argv
 import argparse
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,12 @@ if __name__ == "__main__":
         type=int,
         default=0,
         help="Start naming result files at existing_runs + 1"
+    )
+
+    parser.add_argument(
+        "--env",
+        type=str,
+        help="Path to XML file containing additions to simulation environment"
     )
 
     parser.add_argument(
@@ -112,6 +119,12 @@ if __name__ == "__main__":
         config.gui = True
     if args.record:
         config.record = True
+    if args.env is not None:
+        if os.path.exists(args.env):
+            config.env_path = args.env
+            logger.info(f"Using environment {config.env_path}")
+        else:
+            raise ValueError(f"{args.env} is not a valid path.")
 
     # Run simulation in desired mode (sweep or not sweep)
     if args.sweep is not None:

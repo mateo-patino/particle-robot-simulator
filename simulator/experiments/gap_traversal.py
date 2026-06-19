@@ -6,13 +6,16 @@ Functions for the compliance experiments (gap traversals).
 
 from config.config import SimulationConfig
 from simulator.model.chain import link_length
-from simulator.simulation.engine import Simulation
 from simulator.io.save import create_run_directory
 from simulator.experiments.single_run import run_fast_save
+from copy import deepcopy
 import json
 import os
 import xml.etree.ElementTree as ET
 import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 """
 
@@ -68,29 +71,28 @@ Sets the env_path config variable of 'config' and runs it 'num_runs' times. 'env
 path to an XML file describing a gap of ratio 'gamma'.
 
 """
-def run_gap_traversal_fs(config: SimulationConfig, env_path: str, gamma: float, num_runs: int = 1, existing_runs: int = 0, 
+def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], gap_pos: float,  num_runs: int = 1, existing_runs: int = 0, 
                          label: str | None = None, argv: list[str] | None = None) -> str:
 
-    if env_path is not None:
-        if os.path.exists(env_path):
-            config.env_path = env_path
-        else:        
-           raise FileNotFoundError(f"Environment path {config.env_path} was not found.")
-    
     out_dir = create_run_directory(label)
-
-    for run in range(1, num_runs + 1):
-        out_path = os.path.join(out_dir, f"size{config.size}_gamma{gamma}_{existing_runs + run}.npy")
-        logger.info("Run %d started", run)
-        run_fast_save(config, out_path)
-        logger.info("Run %d complete", run)
+    env_dir_path = "config/env/"
+    for gamma in gammas:
+        new_config = deepcopy(config)
+        new_config.env_path = create_funnel_gap_file(env_dir_path, new_config, gamma, gap_pos)
+        
+        # Run
+        for run in range(1, num_runs + 1):
+            results_path = os.path.join(out_dir, f"size{new_config.size}_gamma{gamma}_{existing_runs + run}.npy")
+            logger.info("Run %d started", run)
+            run_fast_save(new_config, results_path)
+            logger.info("Run %d complete", run)
 
     # run_fast_save does not save metadata, so do it manually
-    with open(os.join.path(out_dir, "metadata.json"), "w") as file:
+    with open(os.path.join(out_dir, "metadata.json"), "w") as file:
         cmd = " ".join(argv).strip() if argv is not None else "argv is None"
         metadata = {
-            "env_path": env_path,
-            "gamma": gamma,
+            "env_dir_path": env_dir_path,
+            "gammas": " ".join([str(g) for g in gammas]),
             "runs": num_runs,
             "existing_runs": existing_runs,
             "label": label,
@@ -98,8 +100,23 @@ def run_gap_traversal_fs(config: SimulationConfig, env_path: str, gamma: float, 
         }
         json.dump(metadata, file, indent=4)
  
-    with open(os.path.join(out_dir, "config.json"), "w") as file:
+    with open(os.path.join(out_dir, "base_config.json"), "w") as file:
         json.dump(config.to_dict(), file, indent=4)
 
-    return dir_path
+    return out_dir
 
+
+"""
+
+Creates a .xml file containing a description of a funnel gap. It returns the path to the .xml file.
+
+"""
+def create_funnel_gap_file(dir_path: str, config: SimulationConfig, gamma: float, gap_pos: float):
+    os.makedirs(dir_path, exist_ok=True)
+    file_path = os.path.join(dir_path, f"N{config.size}_gamma{gamma}.xml")
+
+    with open(file_path, "w") as file:
+        xml_str = create_funnel_gap_xml(get_side_length(config), gamma, gap_pos)
+        file.write(xml_str)
+
+    return file_path

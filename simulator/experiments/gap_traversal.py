@@ -24,41 +24,46 @@ the outermost edge of the chain.
 
 """
 def get_side_length(config: SimulationConfig) -> float:
-    return config.links_per_side*link_length(config) + 2*config.link_radius
+    return config.links_per_side*link_length(config) 
 
 """
 
-Creates an XML description of a funnel-shaped gap. The size of the gap
-is gamma * vpr_side_length, where vpr_side_length is expected to be
-the original side length of the VPR. The walls are 45 degrees away from 
-the x-axis.
+Creates an XML description of a funnel-shaped gap. The size of the gap is 
+gamma times the VPR's original side length. The gap is centered at y-midpoint
+of the VPR. The walls stretch the VPR's vertical half-length.
 
 The gap's position (gap_pos) is assumed to be in world coordinates.
 
 """
-def create_funnel_gap_xml(vpr_side_length: float, gamma: float, gap_pos: float) -> str:
+def create_funnel_gap_xml(config: SimulationConfig, gamma: float) -> str:
     
+    vpr_side_length = get_side_length(config)
     gap_width = vpr_side_length * gamma
 
     root = ET.Element("environment")
   
     # Start and end coordinates of walls
-    wall_length = vpr_side_length / (2 * np.sin(np.pi / 4))
+    gap_pos = vpr_side_length / 2
     start_x = -1 * np.abs(gap_pos)
-    end_x = gap_pos - (vpr_side_length / 2)
+    end_x = 0.5 * start_x
+    
+    top_start_y = (vpr_side_length / 2) + (gap_width / 2) 
+    top_end_y = top_start_y + (vpr_side_length / 2)
 
-    start_y = gap_width / 2 
-    end_y = start_y + (vpr_side_length / 2)
+    bottom_start_y = (vpr_side_length / 2) - (gap_width / 2)
+    bottom_end_y = bottom_start_y - (vpr_side_length / 2)
+
+    height = config.link_radius
 
     # Top wall
     top_wall = ET.SubElement(root, "body", name="top_wall")
-    ET.SubElement(top_wall, "geom", type="capsule", fromto=f"{start_x} {start_y} 0.05 {end_x} {end_y} 0.05",
-            size="0.01", rgba="0.8 0.2 0.2 1")
+    ET.SubElement(top_wall, "geom", type="capsule", fromto=f"{start_x} {top_start_y} {height} {end_x} {top_end_y} {height}",
+            size=f"{height}", rgba="0.8 0.2 0.2 1")
 
     # Bottom wall
     bottom_wall = ET.SubElement(root, "body", name="bottom_wall")
-    ET.SubElement(bottom_wall, "geom", type="capsule", fromto=f"{start_x} {-1*start_y} 0.05 {end_x} {-1*end_y} 0.05",
-                  size="0.01", rgba="0.8 0.2 0.2 1")
+    ET.SubElement(bottom_wall, "geom", type="capsule", fromto=f"{start_x} {bottom_start_y} {height} {end_x} {bottom_end_y} {height}",
+                  size=f"{height}", rgba="0.8 0.2 0.2 1")
 
     ET.indent(root)
 
@@ -71,14 +76,14 @@ Sets the env_path config variable of 'config' and runs it 'num_runs' times. 'env
 path to an XML file describing a gap of ratio 'gamma'.
 
 """
-def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], gap_pos: float,  num_runs: int = 1, existing_runs: int = 0, 
+def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], num_runs: int = 1, existing_runs: int = 0, 
                          label: str | None = None, argv: list[str] | None = None) -> str:
 
     out_dir = create_run_directory(label)
     env_dir_path = "config/env/"
     for gamma in gammas:
         new_config = deepcopy(config)
-        new_config.env_path = create_funnel_gap_file(env_dir_path, new_config, gamma, gap_pos)
+        new_config.env_path = create_funnel_gap_file(env_dir_path, new_config, gamma)
         
         # Run
         for run in range(1, num_runs + 1):
@@ -111,12 +116,12 @@ def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], gap_pos:
 Creates a .xml file containing a description of a funnel gap. It returns the path to the .xml file.
 
 """
-def create_funnel_gap_file(dir_path: str, config: SimulationConfig, gamma: float, gap_pos: float):
+def create_funnel_gap_file(dir_path: str, config: SimulationConfig, gamma: float):
     os.makedirs(dir_path, exist_ok=True)
     file_path = os.path.join(dir_path, f"N{config.size}_gamma{gamma}.xml")
 
     with open(file_path, "w") as file:
-        xml_str = create_funnel_gap_xml(get_side_length(config), gamma, gap_pos)
+        xml_str = create_funnel_gap_xml(config, gamma)
         file.write(xml_str)
 
     return file_path

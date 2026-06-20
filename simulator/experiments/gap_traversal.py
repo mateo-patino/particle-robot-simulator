@@ -5,7 +5,7 @@ Functions for the compliance experiments (gap traversals).
 
 
 from config.config import SimulationConfig
-from simulator.model.chain import link_length
+from simulator.model.chain import link_length, chain_offset_from_origin
 from simulator.io.save import create_run_directory
 from simulator.experiments.single_run import run_fast_save
 from copy import deepcopy
@@ -24,7 +24,7 @@ the outermost edge of the chain.
 
 """
 def get_side_length(config: SimulationConfig) -> float:
-    return config.links_per_side*link_length(config) 
+    return config.links_per_side*link_length(config) + 2*config.link_radius 
 
 """
 
@@ -39,18 +39,19 @@ def create_funnel_gap_xml(config: SimulationConfig, gamma: float) -> str:
     
     vpr_side_length = get_side_length(config)
     gap_width = vpr_side_length * gamma
+    chain_offset = chain_offset_from_origin(link_length(config), config) 
 
     root = ET.Element("environment")
   
     # Start and end coordinates of walls
     gap_pos = vpr_side_length / 2
     start_x = -1 * np.abs(gap_pos)
-    end_x = 0.5 * start_x
+    end_x = 0.25 * start_x
     
-    top_start_y = (vpr_side_length / 2) + (gap_width / 2) 
+    top_start_y = (vpr_side_length / 2) + (gap_width / 2) - (np.abs(chain_offset) + config.link_radius) 
     top_end_y = top_start_y + (vpr_side_length / 2)
 
-    bottom_start_y = (vpr_side_length / 2) - (gap_width / 2)
+    bottom_start_y = (vpr_side_length / 2) - (gap_width / 2) - (np.abs(chain_offset) + config.link_radius) 
     bottom_end_y = bottom_start_y - (vpr_side_length / 2)
 
     height = config.link_radius

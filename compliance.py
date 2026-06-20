@@ -34,14 +34,6 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--gap-pos",
-        type=float,
-        required=True,
-        help="The position of the gap in world coordinates"
-    )
-
-
-    parser.add_argument(
         "--gui",
         action="store_true",
         help="Enable graphic visualization"
@@ -89,7 +81,7 @@ if __name__ == "__main__":
 
     # Perform desired number of runs for each gamma value
     gammas = [float(g) for g in args.gammas]
-    results_path = run_gap_traversal_fs(config, gammas, args.gap_pos, num_runs=args.runs, existing_runs=args.existing_runs, label=args.label,
+    results_path = run_gap_traversal_fs(config, gammas, num_runs=args.runs, existing_runs=args.existing_runs, label=args.label,
                                         argv=argv)
     logger.info(f"Results saved to {results_path}")
 

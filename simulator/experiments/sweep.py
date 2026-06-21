@@ -44,7 +44,7 @@ def run_1d_sweep_fs(config: SimulationConfig, target_parameter: str, values: lis
 
             # Ensure variability across runs by shifting the seed by +1
             if config.seed is not None:
-                new_config.seed = config.seed + run - 1
+                new_config.seed = config.seed + existing_runs + run - 1
 
             logger.info("Run %d started", run)
             out_path = os.path.join(dir_path, f"{target_parameter}_{value}_{existing_runs + run}.npy")
@@ -84,7 +84,7 @@ Note that this function does NOT save data to .npy files after simulation finish
 """
 
 def run_1d_sweep(config: SimulationConfig, target_parameter: str, values: list[Any] | None = None, 
-                 num_runs: int = 1) -> dict[str, dict[int, np.ndarray]]:
+                 num_runs: int = 1, existing_runs: int = 0) -> dict[str, dict[int, np.ndarray]]:
 
     if values is None or len(values) == 0:
         raise ValueError("A non-empty set of values to sweep must be provided.")
@@ -108,7 +108,7 @@ def run_1d_sweep(config: SimulationConfig, target_parameter: str, values: list[A
 
             # Ensure variability across runs by shifting the seed by +1
             if config.seed is not None:
-                new_config.seed = config.seed + run - 1
+                new_config.seed = config.seed + existing_runs + run - 1
 
             logger.info("Run %d started", run)
             sim = Simulation(new_config)

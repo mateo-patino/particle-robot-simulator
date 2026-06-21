@@ -150,7 +150,7 @@ if __name__ == "__main__":
                             existing_runs=args.existing_runs)
         else:
             # Run 1-dimensional sweep without fast saving
-            sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs)
+            sweep_results = run_1d_sweep(config, target_parameter, values, num_runs=args.runs, existing_runs=args.existing_runs)
 
             # Save results
             if not args.no_save:
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         logger.info("Running in SINGLE mode...")
 
         # Run simulation
-        single_run_results = run_single(config, args.runs)
+        single_run_results = run_single(config, args.runs, existing_runs=args.existing_runs)
 
         # Save results
         if not args.no_save:

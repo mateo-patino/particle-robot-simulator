@@ -6,7 +6,7 @@
     "plane_length_factor": 4,
     "record_com_every": 25,
 
-    "size": 64,
+    "size": 16,
 
     "particle_radius": 0.019,
     "cylinder_halflen": 0.019,

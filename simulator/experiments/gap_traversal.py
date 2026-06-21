@@ -83,12 +83,19 @@ def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], num_runs
     out_dir = create_run_directory(label)
     env_dir_path = "config/env/"
     for gamma in gammas:
-        new_config = deepcopy(config)
-        new_config.env_path = create_funnel_gap_file(env_dir_path, new_config, gamma)
+        # Runs with same gamma value can reuse the gap XML file
+        env_path = create_funnel_gap_file(env_dir_path, config, gamma)
         
         # Run
         for run in range(1, num_runs + 1):
+            new_config = deepcopy(config)
             results_path = os.path.join(out_dir, f"size{new_config.size}_gamma{gamma}_{existing_runs + run}.npy")
+            
+            # Set env_path and seed if any
+            new_config.env_path = env_path
+            if config.seed is not None:
+                new_config.seed = config.seed + existing_runs + run - 1
+
             logger.info("Run %d started", run)
             run_fast_save(new_config, results_path)
             logger.info("Run %d complete", run)

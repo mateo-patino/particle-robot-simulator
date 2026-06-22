@@ -23,11 +23,28 @@ logger = logging.getLogger(__name__)
 
 """
 
-TODO: Checks if all Particles in the VPR have crossed the gap.
+Returns True if all Particles in the VPR have crossed the gap. "Crossing the gap" is defined as 
+all Particles having an x-coordinate that is greater in magnitude than the x-coordinate of the gap.
+The gap is always located a non-zero distance from the origin, so we say the VPR crossed the gap 
+as soon as all Particles have gone past this distance.
+
+Note that his function only works for gaps generated parallel to the x axis. Gaps generated
+with different orientations (e.g. for VPRs where the heading isn't (1,0)) are unsuitable for
+this function.
 
 """
 def has_crossed_gap(config: SimulationConfig, model: mujoco.MjModel, data: mujoco.MjData):
-    return True
+    
+    gap_x = get_gap_position(config)[0]
+
+    geom_id = np.empty(config.size, dtype=np.int32)
+    for i in range(config.size):
+        gid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, f"{config.geom_type}{i}")
+        if gid == -1:
+            raise RuntimeError(f"Geom '{config.geom_type}{i}' not found in model")
+        geom_id[i] = gid
+
+    return np.all(np.abs(data.geom_xpos[geom_id, 0]) > np.abs(gap_x))
 
 
 """
@@ -39,6 +56,58 @@ the outermost edge of the chain.
 def get_side_length(config: SimulationConfig) -> float:
     return config.links_per_side*link_length(config) + 2*config.link_radius 
 
+
+"""
+
+Opens the file in config.env_path and returns the (x, y, z) location of the gap. This location
+represents the geometric center of the gap (i.e. the midpoint between the narrowest end of both 
+walls). 
+
+Note that this function assumes the walls are defined using the fromto attribute, and that
+the starting coordinates determine the location of the gap (e.g. the narrow end of each wall corresponds
+to the starting endpoint in the fromto attribute).
+
+"""
+
+def get_gap_position(config: SimulationConfig) -> tuple[float, float, float]:
+
+    if config.env_path is None: raise ValueError("SimulationConfig does not have env_path.")
+
+    if not os.path.exists(config.env_path): raise FileNotFoundError(f"{config.env_path} does not exist.")
+
+    root = ET.parse(config.env_path).getroot()
+    if (len(root) != 2): raise ValueError(f"{config.env_path} is invalid. It must have only two elements representing the two walls of the gap.")
+
+    top_wall, bottom_wall = root
+
+    # Check if the wall geoms were wrapped inside of body tags
+    if top_wall.tag == "body":
+        top_wall = top_wall.find("geom")
+        if top_wall is None: raise ValueError(f"{config.env_path} is invalid. Top wall does not contain a geom.")
+    
+    if bottom_wall.tag == "body":
+        bottom_wall = bottom_wall.find("geom")
+        if bottom_wall is None: raise ValueError(f"{config.env_path} is invalid. Bottom wall does not contain a geom.")
+    
+    top_fromto = top_wall.get("fromto")
+    bot_fromto = bottom_wall.get("fromto")
+
+    if top_fromto is None or bot_fromto is None:
+        raise ValueError(f"{config.env_path} is invalid. Gap walls must define a fromto attribute. If using <body> tags, both walls must be wrapped in <body> blocks")
+
+    top_x, top_y, top_z = [float(x) for x in top_fromto.split()[:3]]
+    bot_x, bot_y, bot_z = [float(x) for x in top_fromto.split()[:3]] 
+
+    gap_x = top_x if np.isclose(top_x, bot_x, rtol=0, atol=1e-12) else None
+    if gap_x is None:  raise ValueError(f"{config.env_path} is invalid. The walls have different start x-coordinates.")
+
+    gap_y = bot_y + (top_y - bot_y) / 2 # Midpoint between both walls
+
+    gap_z = top_z if np.isclose(top_z, bot_z, rtol=0, atol=1e-12) else None
+    if gap_z is None: raise ValueError(f"{config.env_path} is invalid. The walls have different start z-coordinates.")
+
+    return gap_x, gap_y, gap_z
+
 """
 
 Creates an XML description of a funnel-shaped gap. The size of the gap is 
@@ -46,6 +115,11 @@ gamma times the VPR's original side length. The gap is centered at y-midpoint
 of the VPR. The walls stretch the VPR's vertical half-length.
 
 The gap's position (gap_pos) is assumed to be in world coordinates.
+
+TODO: this function assumes locomotion only occurs along the x axis. If the target
+heading were set to a direction that isn't parallel to the x axis, the gap would
+be incorrectly generated along x. A rotationally-invariant gap builder that takes
+config.target_heading into account 
 
 """
 def create_funnel_gap_xml(config: SimulationConfig, gamma: float) -> str:
@@ -123,6 +197,7 @@ def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], num_runs
             "gammas": " ".join([str(g) for g in gammas]),
             "runs": num_runs,
             "existing_runs": existing_runs,
+            "stop_if_callback": stop_if.__qualname__ if stop_if is not None else "None",
             "label": label,
             "cmd": cmd
         }

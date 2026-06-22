@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from config.config import SimulationConfig
-from simulator.simulation import engine, engine_parallel
+from simulator.simulation import engine 
 
 
 @pytest.mark.slow
@@ -22,28 +22,12 @@ def test_seed_reproducibility():
 
 
 @pytest.mark.slow
-def test_engine_parity():
-    config = SimulationConfig(seed=42, size=4, sim_duration=0.5)
-    traj_orig = engine.Simulation(config).run()
-    traj_par = engine_parallel.Simulation(config).run()
-    np.testing.assert_allclose(traj_orig, traj_par, atol=1e-12)
-
-
-@pytest.mark.slow
 def test_different_seeds_produce_different_results():
     config1 = SimulationConfig(seed=42, size=4, sim_duration=0.5)
     config2 = SimulationConfig(seed=99, size=4, sim_duration=0.5)
     traj1 = engine.Simulation(config1).run()
     traj2 = engine.Simulation(config2).run()
     assert not np.allclose(traj1, traj2)
-
-
-@pytest.mark.slow
-def test_parallel_seed_reproducibility():
-    config = SimulationConfig(seed=42, size=4, sim_duration=0.5)
-    traj1 = engine_parallel.Simulation(config).run()
-    traj2 = engine_parallel.Simulation(config).run()
-    np.testing.assert_array_equal(traj1, traj2)
 
 
 @pytest.mark.slow

@@ -26,6 +26,8 @@
     "solver": "Newton",
     "iterations": 100,
     "tolerance": 1e-12,
+    "check_stop_every": 2,
+
 
     "links_per_side": 8,
     "tau": 0.6,

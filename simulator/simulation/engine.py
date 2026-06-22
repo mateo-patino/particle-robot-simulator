@@ -109,7 +109,8 @@ class Simulation:
             if stop_if is not None and data.time - LAST_STOP_CHECK > CHECK_STOP_EVERY:
                 LAST_STOP_CHECK = data.time
                 if stop_if(config, model, data):
-                    logger.info("Simulation successfully stopped by stop_if condition.")
+                    logger.info("Simulation successfully stopped by callback function ''%s'",
+                                stop_if.__name__)
                     break
 
             # Control algorithm

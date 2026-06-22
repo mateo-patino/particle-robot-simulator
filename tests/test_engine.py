@@ -34,3 +34,25 @@ def test_initialize_directions_deterministic(small_config):
     dirs2 = sim.initialize_directions(rng2)
     np.testing.assert_array_equal(dirs1, dirs2)
 
+
+def test_run_calls_stop_condition(small_config):
+    small_config.check_stop_every = 0.1
+    sim = Simulation(small_config)
+    called = False
+    def stop_if(config, model, data):
+        nonlocal called
+        called = True
+        return False
+    sim.run(stop_if=stop_if)
+    assert called
+
+
+def test_run_stop_condition_reduces_samples(small_config):
+    small_config.check_stop_every = 0.1
+    sim = Simulation(small_config)
+    full_positions = sim.run()
+    def stop_if(config, model, data):
+        return True
+    stopped_positions = sim.run(stop_if=stop_if)
+    assert len(stopped_positions) < len(full_positions)
+

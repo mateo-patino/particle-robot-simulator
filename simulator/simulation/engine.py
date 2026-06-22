@@ -2,11 +2,14 @@ import logging
 
 from simulator.model.xml_builder import create_xml
 from config.config import SimulationConfig
+from collections.abc import Callable
 import numpy as np
 import mujoco
 import time
 
 logger = logging.getLogger(__name__)
+
+StopCondition = Callable[[SimulationConfig, mujoco.MjModel, mujoco.MjData], bool]
 
 class Simulation:
 
@@ -19,7 +22,7 @@ class Simulation:
         rng.shuffle(signs)
         return np.array(signs)
 
-    def run(self) -> np.ndarray:
+    def run(self, stop_if: StopCondition | None = None) -> np.ndarray:
 
         config = self.config
 
@@ -29,6 +32,7 @@ class Simulation:
         LOG_EVERY = config.log_sim_time_every # simulation seconds
         NOISE_PHASE_EVERY = config.noise_phase_every # simulation seconds
         RUN_ALG_EVERY = config.run_control_every # simulation seconds
+        CHECK_STOP_EVERY = config.check_stop_every # simulation seconds
         RECORD_COM_EVERY = config.record_com_every # steps
         RENDER_EVERY = config.render_every # steps
         SIM_DURATION = config.sim_duration
@@ -90,17 +94,22 @@ class Simulation:
         LAST_LOG = 0
         LAST_ALG_RUN = 0
         LAST_PHASE_NOISE = 0
+        LAST_STOP_CHECK = 0
         steps_done = 0
         wall_start = time.perf_counter()
-        while (data.time < SIM_DURATION and samples_taken < EXPECTED_SAMPLE_SIZE):\
-
-            # TODO: implement callback for early stoppage
+        while (data.time < SIM_DURATION and samples_taken < EXPECTED_SAMPLE_SIZE):
 
             # Record positions
             if (steps_done % RECORD_COM_EVERY == 0):
                 current_positions[:] = data.geom_xpos[geomID, :2]
                 COM_POSITION[samples_taken, :] = np.mean(current_positions, axis=0)
                 samples_taken += 1
+
+            if stop_if is not None and data.time - LAST_STOP_CHECK > CHECK_STOP_EVERY:
+                LAST_STOP_CHECK = data.time
+                if stop_if(config, model, data):
+                    logger.info("Simulation successfully stopped by stop_if condition.")
+                    break
 
             # Control algorithm
             if (data.time - LAST_ALG_RUN > RUN_ALG_EVERY):

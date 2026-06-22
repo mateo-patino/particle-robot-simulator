@@ -104,7 +104,8 @@ class Simulation:
                 current_positions[:] = data.geom_xpos[geomID, :2]
                 COM_POSITION[samples_taken, :] = np.mean(current_positions, axis=0)
                 samples_taken += 1
-
+            
+            # Check stop condition
             if stop_if is not None and data.time - LAST_STOP_CHECK > CHECK_STOP_EVERY:
                 LAST_STOP_CHECK = data.time
                 if stop_if(config, model, data):

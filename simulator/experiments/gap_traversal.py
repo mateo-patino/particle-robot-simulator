@@ -10,6 +10,7 @@ from simulator.model.chain import link_length, chain_offset_from_origin
 from simulator.io.save import create_run_directory
 from simulator.experiments.single_run import run_fast_save
 from copy import deepcopy
+import mujoco
 import json
 import os
 import xml.etree.ElementTree as ET
@@ -56,8 +57,10 @@ def create_funnel_gap_xml(config: SimulationConfig, gamma: float) -> str:
     root = ET.Element("environment")
   
     # Start and end coordinates of walls
+    sign = -1 if config.geom_type == "sphere" else 1
+    gap_offset = 0 if config.geom_type == "sphere" else vpr_side_length
     gap_pos = vpr_side_length / 2
-    start_x = -1 * np.abs(gap_pos)
+    start_x = sign * (gap_offset + np.abs(gap_pos))
     end_x = 0.25 * start_x
     
     top_start_y = (vpr_side_length / 2) + (gap_width / 2) - (np.abs(chain_offset) + config.link_radius) 
@@ -85,8 +88,8 @@ def create_funnel_gap_xml(config: SimulationConfig, gamma: float) -> str:
 
 """
 
-Sets the env_path config variable of 'config' and runs it 'num_runs' times. 'env_path' must be the
-path to an XML file describing a gap of ratio 'gamma'.
+Simulates a VPR crossing a gap across multiple gamma values. The simulation stops early whenever
+all Particles in the VPR have crossed the gap (see has_crossed_gap).
 
 """
 def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], num_runs: int = 1, existing_runs: int = 0, 

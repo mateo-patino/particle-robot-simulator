@@ -2,7 +2,7 @@
 
 Configuration parameters for the simulation.
 Every variable is in S.I. units. "refresh_every," "record_com_every" are in units of simulation steps.
-"run_control_every" and "log_sim_time" are in simulation seconds.
+"run_control_every", "log_sim_time", and "check_stop_every" are in simulation seconds.
 
 """
 
@@ -54,6 +54,7 @@ class SimulationConfig:
     solver: str = "Newton"
     iterations: int = 100
     tolerance: float = 1e-12
+    check_stop_every: float = 1 # Simulation seconds
 
     # Chain parameters
     links_per_side: int = 5

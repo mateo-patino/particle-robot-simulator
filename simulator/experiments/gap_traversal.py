@@ -5,6 +5,7 @@ Functions for the compliance experiments (gap traversals).
 
 
 from config.config import SimulationConfig
+from simulator.simulation.engine import StopCondition
 from simulator.model.chain import link_length, chain_offset_from_origin
 from simulator.io.save import create_run_directory
 from simulator.experiments.single_run import run_fast_save
@@ -16,6 +17,17 @@ import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+
+"""
+
+TODO: Checks if all Particles in the VPR have crossed the gap.
+
+"""
+def has_crossed_gap(config: SimulationConfig, model: mujoco.MjModel, data: mujoco.MjData):
+    return True
+
 
 """
 
@@ -78,7 +90,7 @@ path to an XML file describing a gap of ratio 'gamma'.
 
 """
 def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], num_runs: int = 1, existing_runs: int = 0, 
-                         label: str | None = None, argv: list[str] | None = None) -> str:
+                         stop_if: StopCondition | None = has_crossed_gap, label: str | None = None, argv: list[str] | None = None) -> str:
 
     out_dir = create_run_directory(label)
     env_dir_path = "config/env/"
@@ -97,7 +109,7 @@ def run_gap_traversal_fs(config: SimulationConfig, gammas: list[float], num_runs
                 new_config.seed = config.seed + existing_runs + run - 1
 
             logger.info("Run %d started", run)
-            run_fast_save(new_config, results_path)
+            run_fast_save(new_config, results_path, stop_if=stop_if)
             logger.info("Run %d complete", run)
 
     # run_fast_save does not save metadata, so do it manually
@@ -133,3 +145,5 @@ def create_funnel_gap_file(dir_path: str, config: SimulationConfig, gamma: float
         file.write(xml_str)
 
     return file_path
+
+

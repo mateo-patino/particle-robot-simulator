@@ -1,6 +1,6 @@
 import logging
 
-from simulator.simulation.engine import Simulation
+from simulator.simulation.engine import Simulation, StopCondition
 from config.config import SimulationConfig
 from copy import deepcopy
 import numpy as np
@@ -39,9 +39,9 @@ Returns: an NumPy array containing the position data from the simulation
 
 """
 
-def run_fast_save(config: SimulationConfig, file_path: str) -> np.ndarray:
+def run_fast_save(config: SimulationConfig, file_path: str, stop_if: StopCondition | None = None) -> np.ndarray:
     sim = Simulation(config)
-    data = sim.run()
+    data = sim.run(stop_if=stop_if)
     np.save(file_path, data)
     return data
 

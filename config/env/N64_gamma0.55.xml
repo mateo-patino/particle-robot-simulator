@@ -1,0 +1,8 @@
+<environment>
+  <body name="top_wall">
+    <geom type="capsule" fromto="-0.2119510988057593 0.24960810434316766 0.019 -0.052987774701439824 0.46155920314892696 0.019" size="0.019" rgba="0.8 0.2 0.2 1" />
+  </body>
+  <body name="bottom_wall">
+    <geom type="capsule" fromto="-0.2119510988057593 0.016461895656832384 0.019 -0.052987774701439824 -0.19548920314892693 0.019" size="0.019" rgba="0.8 0.2 0.2 1" />
+  </body>
+</environment>

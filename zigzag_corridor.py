@@ -59,7 +59,7 @@ def create_zigzag_corridor_xml(height: float, width: float, count: int, gamma: f
 
     vpr_side_length = get_side_length(config)
     gap_width = gamma * vpr_side_length
-    corridor_x_offset = 1.2*vpr_side_length
+    corridor_x_offset = 1.1*vpr_side_length
     chain_offset = chain_offset_from_origin(link_length(config), config)
 
     root = ET.Element("environment")

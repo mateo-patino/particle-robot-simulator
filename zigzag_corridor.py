@@ -148,5 +148,5 @@ if __name__ == "__main__":
         xml_str = create_zigzag_corridor_xml(width, height, count, gamma, config)
         out_file.write(xml_str)
     
-    print(f"File saved to {file_path}")
+    print(f"{file_path}")
     

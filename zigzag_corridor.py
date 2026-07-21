@@ -33,7 +33,7 @@ def create_leg(parent: ET.Element, from_: tuple[float, float, float],
     
 
 
-def create_triangle(parent: ET.Element, height: float, width: float, from_: tuple[float, float, float]) :
+def create_triangle(parent: ET.Element, width: float, height: float, from_: tuple[float, float, float]) :
     hw = width / 2
     # First leg (i.e. the one closest to the origin)
     leg1_tox = from_[0] + hw
@@ -55,7 +55,7 @@ def create_triangle(parent: ET.Element, height: float, width: float, from_: tupl
 
 
 
-def create_zigzag_corridor_xml(height: float, width: float, count: int, gamma: float, config: SimulationConfig) -> str:
+def create_zigzag_corridor_xml(width: float, height: float, count: int, gamma: float, config: SimulationConfig) -> str:
 
     vpr_side_length = get_side_length(config)
     gap_width = gamma * vpr_side_length
@@ -72,12 +72,12 @@ def create_zigzag_corridor_xml(height: float, width: float, count: int, gamma: f
         # Top triangle
         top_triangle_body = ET.SubElement(root, "body", name=f"top_triangle{i}")
         top_from_y = (vpr_side_length / 2) + (gap_width / 2) - (np.abs(chain_offset) + config.link_radius)
-        create_triangle(top_triangle_body, height, width, from_=(from_x, top_from_y, from_z))
+        create_triangle(top_triangle_body, width, height, from_=(from_x, top_from_y, from_z))
 
         # Bottom tirangle
         bot_triangle_body = ET.SubElement(root, "body", name=f"bottom_triangle{i}")
         bot_from_y = (vpr_side_length / 2) - (gap_width / 2) - (np.abs(chain_offset) + config.link_radius)
-        create_triangle(bot_triangle_body, height, width, from_=(from_x, bot_from_y, from_z))
+        create_triangle(bot_triangle_body, width, height, from_=(from_x, bot_from_y, from_z))
     
     ET.indent(root)
 

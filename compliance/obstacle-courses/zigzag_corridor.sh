@@ -1,15 +1,30 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Verify 10 command-line arguments are passed 
 if [ $# -ne 10 ]; then
-    echo "Usage: ./zigzag_corridor.sh --config [path] --width [width] --height [height] --count [count] --gamma [gamma]"
+    echo "Usage: $0 --config [path] --width [width] --height [height] --count [count] --gamma [gamma]"
     exit 1
 fi
 
-# Create the XML of the zigzag corridor
-xmlpath=$(python3 zigzag_corridor.py --config "$2" --width "$4" --height "$6" --count "$8" --gamma "${10}")
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-# Start simulation
-mjpython run.py --config config/paper_experiments/obstacle_course.json --env "$xmlpath" --gui --log-level DEBUG
+# Interpret relative paths from the repository root so the wrapper can be run
+# from any working directory.
+cd "$REPO_ROOT"
+
+# Create the XML of the zigzag corridor
+xmlpath=$(PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 "$SCRIPT_DIR/zigzag_corridor.py" \
+    --dir-path "$REPO_ROOT/config/env" \
+    --config "$2" \
+    --width "$4" \
+    --height "$6" \
+    --count "$8" \
+    --gamma "${10}")
+
+# Start a simulation with the same configuration used to generate the corridor.
+mjpython "$REPO_ROOT/run.py" --config "$2" --env "$xmlpath" --gui --log-level DEBUG
 
 # width=0.45 and height=0.25 work well.
